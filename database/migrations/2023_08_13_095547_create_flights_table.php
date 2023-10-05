@@ -20,9 +20,9 @@ return new class extends Migration
             $table->date('arrival_date');
             $table->time('departure_time')->default(now()->format('H:i'));
             $table->time('arrival_time')->default(now()->format('H:i'));
-            $table->time('duration')->nullable();
+            $table->string('duration');
             $table->string('price');
-            $table->bigInteger('airline_id');
+            $table->foreignId('airline_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

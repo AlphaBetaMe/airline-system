@@ -8,7 +8,7 @@
             <div class="card mb-4">
                 <div class="card-body">
                     <h1 class="mb-2">Flight List</h1>
-                    <a href="#" class="btn btn-primary">Change Flight</a>
+                    <a href="/" class="btn btn-primary">Change Flight</a>
                 </div>
             </div>
         </div>
@@ -24,16 +24,29 @@
                             <th>Duration</th>
                             <th>Fly Only Price</th>
                             <th>Fly with Baggage Price</th>
+                            <th>Action</th>
                         </tr>
+                        @forelse ($results as $result)
                         <tr>
-                            <td>Airline Name</td>
-                            <td>Flight Number</td>
-                            <td>Departure Airport</td>
-                            <td>Arrival Airport</td>
-                            <td>Flight Duration</td>
-                            <td>Fly Only Price</td>
+                            <td>{{ $result->airline->airline }}</td>
+                            <td>{{ $result->id }}</td>
+                            <td>{{ $result->departure_date }}</td>
+                            <td>{{ $result->arrival_date }}</td>
+                            <td>{{ $result->duration }}</td>
+                            <td>₱{{ $result->price }}</td>
                             <td>Fly with Baggage Price</td>
+                            <td>
+                                <a href="" class="btn btn-sm btn-primary">Continue</a>
+                            </td>
                         </tr>
+                        @empty
+                        <tr>
+                            <td style="background: red; padding: .5rem 1reml; color: white;">No matching
+                                flights found
+                            </td>
+                        </tr>
+                        @endforelse
+
                         <!-- Repeat the above 'tr' for each flight -->
                     </table>
                 </div>
