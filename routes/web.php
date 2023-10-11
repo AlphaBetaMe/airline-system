@@ -71,3 +71,4 @@ Route::group(['middleware' => ['auth', 'role:user'], 'prefix' => 'user'], functi
 // Search
 Route::get('/flight-list', [UserController::class, 'flightList']);
 Route::get('/search/flight-list', [SearchController::class, 'searchResults'])->name('search-flight.results');
+Route::get('/passenger-details/{id}', [SearchController::class, 'passengerDetails'])->name('continue-passenger-details');

@@ -98,7 +98,7 @@
                                     </button>
                                 </span>
                                 <input type="number" class="form-control input-number" id="childPassengers"
-                                    name="adultPassengers" value="0" min="0">
+                                    name="childPassengers" value="0" min="0">
                                 <span class="input-group-append">
                                     <button type="button" class="btn btn-primary" id="incrementChildren">
                                         <span class="fa fa-plus"></span>
@@ -116,7 +116,7 @@
                                     </button>
                                 </span>
                                 <input type="number" class="form-control input-number" id="infantPassengers"
-                                    name="adultPassengers" value="0" min="0">
+                                    name="infantPassengers" value="0" min="0">
                                 <span class="input-group-append">
                                     <button type="button" class="btn btn-primary" id="incrementInfants">
                                         <span class="fa fa-plus"></span>
