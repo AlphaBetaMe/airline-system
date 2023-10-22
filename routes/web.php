@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\AirlineController;
 use App\Http\Controllers\Admin\AirportController;
 use App\Http\Controllers\Admin\FlightController;
 use App\Http\Controllers\Admin\PassengerController;
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SuperAdminController;
@@ -66,6 +67,7 @@ Route::group(['middleware' => ['auth', 'role:admin'], 'prefix' => 'admin'], func
 // Passenger Routes
 Route::group(['middleware' => ['auth', 'role:user'], 'prefix' => 'user'], function () {
     Route::get('dashboard', [UserController::class, 'index']);
+    Route::resource('/booking', BookingController::class);
 });
 
 // Search

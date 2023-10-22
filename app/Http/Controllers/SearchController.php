@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Airline;
 use App\Models\Flight;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SearchController extends Controller
 {
@@ -41,6 +42,50 @@ class SearchController extends Controller
         $queryDeparture = $request->input('departure_date');
         $queryArrival = $request->input('arrival_date');
 
+        // retrieving the airport data
+        $flight = Flight::find($id);
+
+
+        if ($flight) {
+            // origin
+            $originAirport = DB::table('airports')
+                            ->select('code', 'airport', 'location')
+                            ->where('id', $queryOrigin)
+                            ->first();
+            // destination
+            $destinationAirport = DB::table('airports')
+                            ->select('code', 'airport', 'location')
+                            ->where('id', $queryDestination)
+                            ->first();
+
+            // departure time
+            $departureTime =  $flight->departure_time;
+            // arrival time
+            $arrivalTime =  $flight->arrival_time;
+
+            if ($originAirport) {
+                $originAirportCode = $originAirport->code;
+                $originAirportName = $originAirport->airport;
+                $originAirportLocation = $originAirport->location;
+            } else {
+                // Handle case where airport with given ID is not found
+                dd('origin airport not found');
+            }
+
+            if ($destinationAirport) {
+                $destinationAirportCode = $destinationAirport->code;
+                $destinationAirportName = $destinationAirport->airport;
+                $destinationAirportLocation = $destinationAirport->location;
+            } else {
+                // Handle case where airport with given ID is not found
+                dd('destination airport not found');
+            }
+
+        } else {
+            // Handle case where flight with given ID is not found
+            dd('flight not found');
+        }
+
 
         try {
             $result = Flight::where('origin_id', $queryOrigin)
@@ -53,7 +98,11 @@ class SearchController extends Controller
          $child = $request->childPassengers;
          $infant = $request->infantPassengers;
 
-            return view('user.booking-steps.passenger-details', compact('result', 'adult', 'child', 'infant'));
+            return view('user.booking-steps.passenger-details', compact(
+                'originAirportName',  'originAirportLocation', 'destinationAirportName', 'originAirportName',
+                'destinationAirportName',
+                'destinationAirportLocation',
+                'result', 'departureTime', 'arrivalTime', 'adult', 'child', 'infant', 'originAirportCode', 'destinationAirportCode'));
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             // User not found
             abort(404, 'Resource not found');

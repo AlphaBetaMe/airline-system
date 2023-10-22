@@ -2,9 +2,12 @@
     <h2 class=" mt-2">Baggage</h2>
     <div class="row card-body">
         <!-- First Column: First Name -->
+        @auth
         <div class="col-3">
             <label for="firstName">Name: {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</label>
         </div>
+
+        @endauth
 
         <!-- Second Column: Radio Buttons -->
         <div class="col-sm-6">
