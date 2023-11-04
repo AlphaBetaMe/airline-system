@@ -31,6 +31,7 @@
     <input name="adultPassengers" id="adultPassengers" type="hidden" value="{{ $adult }}">
     <input name="childPassengers" id="childPassengers" type="hidden" value="{{ $child }}">
     <input name="infantPassengers" id="infantPassengers" type="hidden" value="{{ $infant }}">
+    <input name="seatClass" id="seatClass" type="hidden" value="{{ $querySeatClass }}">
 
     <input x-model="originAirportCode" name="originAirportCode" id="originAirportCode" type="hidden">
     <input x-model="destinationAirportCode" name="destinationAirportCode" id="destinationAirportCode" type="hidden">
@@ -42,7 +43,6 @@
     <input x-model="originAirportLocation" name="originAirportLocation" id="originAirportLocation" type="hidden">
     <input x-model="departureTime" name="departureTime" id="departureTime" type="hidden">
     <input x-model="arrivalTime" name="arrivalTime" id="arrivalTime" type="hidden">
-
 
     <div class="container step" id="step1">
         @for ($i = 1; $i <= $numberofPassengers; $i++) <div class="card" style="max-width: 800px; margin: 1rem auto;">

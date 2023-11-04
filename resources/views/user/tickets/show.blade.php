@@ -41,12 +41,18 @@
                         <span class="brand-letter brand-letter-s">S</span>
                     </a>
                     <div class="mr-3">
-                        <h5 class="fw-bold text-white">BOARDING PASS</h5>
+                        <h5 class="fw-bold m-0 text-white">BOARDING PASS</h5>
+                        <p class="fw-normal text-uppercase text-center m-0 p-0 text-white">{{ $ticket->seatClass
+                            }} CLASS
+                        </p>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="mr-3">
-                        <h5 class="fw-bold text-white">BOARDING PASS</h5>
+                        <h5 class="fw-bold m-0 text-white">BOARDING PASS</h5>
+                        <p class="fw-normal text-uppercase  m-0 p-0 text-white">{{ $ticket->seatClass
+                            }} CLASS
+                        </p>
                     </div>
                 </div>
             </div>

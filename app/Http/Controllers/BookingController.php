@@ -58,6 +58,7 @@ class BookingController extends Controller
             'pwd' => 'nullable',
             'special_asssitance' => 'nullable',
             'adds_on_baggage' => 'nullable',
+            'seatClass' => 'nullable',
             'cancel' => 'nullable',
         ]);
 
@@ -114,6 +115,7 @@ class BookingController extends Controller
             'pwd' => !empty($pwd) ? implode('|', $pwd) : null,
             'special_asssitance' => implode('|',$specialAssistance),
             'adds_on_baggage' => $request->input('adds_on_baggage'),
+            'seatClass' => $request->input('seatClass'),
             'cancel' => $request->input('cancel'),
         ]);
 
