@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Airline;
+use App\Models\Booking;
 use App\Models\Flight;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -17,6 +18,8 @@ class SearchController extends Controller
         $queryArrival = $request->input('arrival_date');
         $queryAdultPassenger = $request->input('arrival_date');
         $queryArrival = $request->input('adultPassengers');
+
+        /* generate the flight id here */
 
         //* get the flights that match the query */
         $results = Flight::where('origin_id', 'like', '%' . $queryOrigin . '%')
@@ -41,6 +44,7 @@ class SearchController extends Controller
         $queryDestination = $request->input('destination_id');
         $queryDeparture = $request->input('departure_date');
         $queryArrival = $request->input('arrival_date');
+
 
         // retrieving the airport data
         $flight = Flight::find($id);
@@ -98,10 +102,21 @@ class SearchController extends Controller
          $child = $request->childPassengers;
          $infant = $request->infantPassengers;
 
+         $seats = [
+            'A1', 'A2', 'A3', 'A4', 'A5',
+            'B1', 'B2', 'B3', 'B4', 'B5',
+            'C1', 'C2', 'C3', 'C4', 'C5',
+            'D1', 'D2', 'D3', 'D4', 'D5',
+            // ... other seats
+        ];
+
+
+         $acquiredSeats = Booking::where('originAirportCode', $originAirportCode)->where('destinationAirportCode', $destinationAirportCode)->pluck('seat')->toArray();
+
             return view('user.booking-steps.passenger-details', compact(
                 'originAirportName',  'originAirportLocation', 'destinationAirportName', 'originAirportName',
-                'destinationAirportName',
-                'destinationAirportLocation',
+                'destinationAirportName', 'acquiredSeats',
+                'destinationAirportLocation', 'seats',
                 'result', 'departureTime', 'arrivalTime', 'adult', 'child', 'infant', 'originAirportCode', 'destinationAirportCode'));
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             // User not found
