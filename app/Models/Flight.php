@@ -20,6 +20,7 @@ class Flight extends Model
         'departure_time',
         'arrival_time',
         'price',
+        'flight_number',
         'airline_id'
     ];
 
@@ -32,7 +33,7 @@ class Flight extends Model
     {
         return $this->belongsTo(Airport::class, 'origin_id', 'id');
     }
-    
+
     public function destinationAirport()
     {
         return $this->belongsTo(Airport::class, 'destination_id', 'id');
@@ -50,5 +51,5 @@ class Flight extends Model
     return $hours . 'h ' . $minutes . 'm';
 }
 
-    
+
 }

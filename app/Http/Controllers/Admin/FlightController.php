@@ -44,10 +44,19 @@ class FlightController extends Controller
             'arrival_time' => 'required|date_format:H:i',
             'price' => 'required|numeric',
             'airline_id' => 'required',
+            'flight_number' => 'nullable',
         ];
 
         // Apply the validation rules to the request data
         $request->validate($rules);
+
+        function generateUniqueFlightNumber() {
+            $prefix = "FR";
+            $randomNumbers = str_pad(rand(0, 999), 3, '0', STR_PAD_LEFT);
+            return $prefix . $randomNumbers;
+        }
+
+        $flightNumber = generateUniqueFlightNumber();
 
         $flight = new Flight();
         $flight->flight_type = $request->input('flight_type');
@@ -59,6 +68,7 @@ class FlightController extends Controller
         $flight->arrival_time = $request->input('arrival_time');
         $flight->price = $request->input('price');
         $flight->airline_id = $request->input('airline_id');
+        $flight->flight_number = $flightNumber;
 
         // Parse departure and arrival date and time as Carbon DateTime objects
         $departureDateTime = Carbon::parse($flight->departure_date . ' ' . $flight->departure_time);

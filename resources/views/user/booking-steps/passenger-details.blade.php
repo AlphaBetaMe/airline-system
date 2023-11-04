@@ -7,7 +7,7 @@
     ...formData({
         'inputs': {{ @json_encode(array_fill(0, $numberofPassengers, ['firstName' => '', 'middleInitial' => '', 'lastName' => '', 'contactNumber' => '', 'address' => '', 'dateOfBirth' => ''])) }},
     }),
-    'flight_number': '{{ $result->id }}',
+    'flight_number': '{{ $result->flight_number }}',
     'departure_date':  '{{ \Carbon\Carbon::parse($result->departure_date)->format('M d Y, D.') }}',
     'arrival_date':  '{{ \Carbon\Carbon::parse($result->arrival_date)->format('M d Y, D.') }}',
     'originAirportCode': '{{  $originAirportCode}}',
