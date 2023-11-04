@@ -92,7 +92,7 @@
                         <div class="row mb-3">
                             <div class="col-md-4">
                                 <p class="m-0 text-muted">Flight Number</p>
-                                <h5>{{ $ticket->flight_no }}</h5>
+                                <h5> {{ substr($ticket->flight_no, 0, 2) }} {{ substr($ticket->flight_no, 2) }}</h5>
                             </div>
                             <div class="col-md-4">
                             </div>
@@ -124,10 +124,11 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <p class="m-0 text-muted">Flight Number</p>
-                                <h6 class="fw-bold">{{ $ticket->flight_no }}</h6>
+                                <h6 class="fw-bold"> {{ substr($ticket->flight_no, 0, 2) }} {{
+                                    substr($ticket->flight_no, 2) }}</h6>
                             </div>
                             <div class="col-md-6">
-                                <p class="m-0 text-muted">Flight Number</p>
+                                <p class="m-0 text-muted">Airline</p>
                                 <h6 class="fw-bold">{{ $ticket->airline }}</h6>
                             </div>
                         </div>
