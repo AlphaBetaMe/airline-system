@@ -41,6 +41,7 @@
                             <input name="adultPassengers" type="hidden" value="{{ $adult }}">
                             <input name="childPassengers" type="hidden" value="{{ $child }}">
                             <input name="infantPassengers" type="hidden" value="{{ $infant }}">
+                            <input name="seatClass" type="hidden" value="{{ $querySeatClass }}">
 
                             <tr>
                                 <td>{{ $result->airline->airline }}

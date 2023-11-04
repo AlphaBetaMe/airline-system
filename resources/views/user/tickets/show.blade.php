@@ -34,19 +34,27 @@
         <header class="bg-primary py-3 rounded-2">
             <div class="row">
                 <div class="col-md-8 d-flex justify-content-between px-5">
-                    <a class="navbar-brand" href="{{ url('/') }}">
-                        <span class="brand-letter brand-letter-a">A</span>
-                        <span class="brand-letter brand-letter-f">F</span>
-                        <span class="brand-letter brand-letter-r">R</span>
-                        <span class="brand-letter brand-letter-s">S</span>
-                    </a>
+                    <h3>
+                        <a class="navbar-brand" href="{{ url('/') }}">
+                            <span class="brand-letter brand-letter-a">A</span>
+                            <span class="brand-letter brand-letter-f">F</span>
+                            <span class="brand-letter brand-letter-r">R</span>
+                            <span class="brand-letter brand-letter-s">S</span>
+                        </a>
+                    </h3>
                     <div class="mr-3">
-                        <h5 class="fw-bold text-white">BOARDING PASS</h5>
+                        <h5 class="fw-bold m-0 text-white">BOARDING PASS</h5>
+                        <p class="fw-normal text-uppercase text-center m-0 p-0 text-white">{{ $ticket->seatClass
+                            }} CLASS
+                        </p>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="mr-3">
-                        <h5 class="fw-bold text-white">BOARDING PASS</h5>
+                        <h5 class="fw-bold m-0 text-white">BOARDING PASS</h5>
+                        <p class="fw-normal text-uppercase  m-0 p-0 text-white">{{ $ticket->seatClass
+                            }} CLASS
+                        </p>
                     </div>
                 </div>
             </div>
@@ -94,15 +102,19 @@
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <div class="col-md-4">
+                            <div class="col-md-3">
+                                <p class="m-0 text-muted">Gate</p>
+                                <h5>{{ $ticket->gate }}</h5>
+                            </div>
+                            <div class="col-md-3">
                                 <p class="m-0 text-muted">Seat</p>
                                 <h5>{{ $ticket->seat }}</h5>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <p class="m-0 text-muted">Departure</p>
                                 <h5>{{ $ticket->departureTime }}</h5>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <p class="m-0 text-muted">Arrival</p>
                                 <h5>{{ $ticket->arrivalTime }}</h5>
                             </div>
@@ -150,6 +162,12 @@
                             </div>
                         </div>
                         <div class="row mb-3">
+                            <div class="col-md-4">
+                                <p class="m-0 text-muted">Gate</p>
+                                <h6 class="fw-bold">
+                                    {{ $ticket->gate }}
+                                </h6>
+                            </div>
                             <div class="col-md-4">
                                 <p class="m-0 text-muted">Seat</p>
                                 <h6 class="fw-bold">

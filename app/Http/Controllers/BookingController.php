@@ -58,6 +58,8 @@ class BookingController extends Controller
             'pwd' => 'nullable',
             'special_asssitance' => 'nullable',
             'adds_on_baggage' => 'nullable',
+            'seatClass' => 'nullable',
+            'gate' => 'nullable',
             'cancel' => 'nullable',
         ]);
 
@@ -114,6 +116,8 @@ class BookingController extends Controller
             'pwd' => !empty($pwd) ? implode('|', $pwd) : null,
             'special_asssitance' => implode('|',$specialAssistance),
             'adds_on_baggage' => $request->input('adds_on_baggage'),
+            'seatClass' => $request->input('seatClass'),
+            'gate' => $this->generateRandomGate(),
             'cancel' => $request->input('cancel'),
         ]);
 
@@ -135,6 +139,26 @@ class BookingController extends Controller
 
             return $randomSeat;
         }
+
+        /* Gate */
+
+
+    function generateRandomGate() {
+        // Define characters for gates
+        $characters = 'ABCDEFGHI';
+        $numbers = '123456789';
+
+        // Generate random character from 'A' to 'I'
+        $randomChar = $characters[rand(0, strlen($characters) - 1)];
+
+        // Generate random number from '1' to '9'
+        $randomNumber = $numbers[rand(0, strlen($numbers) - 1)];
+
+        // Concatenate the random character and number to form the gate
+        $randomGate = $randomChar . $randomNumber;
+
+        return $randomGate;
+    }
 
 
 

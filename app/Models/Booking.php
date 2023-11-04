@@ -38,6 +38,8 @@ class Booking extends Model
         'pwd',
         'special_asssitance',
         'adds_on_baggage',
+        'seatClass',
+        'gate',
         'cancel',
     ];
 

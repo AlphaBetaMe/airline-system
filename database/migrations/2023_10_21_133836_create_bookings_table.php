@@ -42,6 +42,8 @@ return new class extends Migration
             $table->string('special_asssitance')->nullable();
             $table->string('adds_on_baggage')->nullable();
             $table->string('cancel')->nullable();
+            $table->string('seatClass')->nullable();
+            $table->string('gate')->nullable();
             $table->timestamps();
         });
     }

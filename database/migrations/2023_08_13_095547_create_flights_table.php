@@ -21,6 +21,7 @@ return new class extends Migration
             $table->time('departure_time')->default(now()->format('H:i'));
             $table->time('arrival_time')->default(now()->format('H:i'));
             $table->string('duration');
+            $table->string('flight_number')->nullable();
             $table->string('price');
             $table->foreignId('airline_id')->constrained()->cascadeOnDelete();
             $table->timestamps();

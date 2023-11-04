@@ -18,6 +18,7 @@ class SearchController extends Controller
         $queryArrival = $request->input('arrival_date');
         $queryAdultPassenger = $request->input('arrival_date');
         $queryArrival = $request->input('adultPassengers');
+        $querySeatClass = $request->input('seatClassRoundtrip');
 
         /* generate the flight id here */
 
@@ -35,7 +36,7 @@ class SearchController extends Controller
 
 
         // Redirect to a results page and pass the search results
-        return view('user.flight-list', compact('results', 'adult', 'child', 'infant'));
+        return view('user.flight-list', compact('results', 'querySeatClass', 'adult', 'child', 'infant'));
     }
 
     public function passengerDetails(Request $request, $id)
@@ -44,7 +45,7 @@ class SearchController extends Controller
         $queryDestination = $request->input('destination_id');
         $queryDeparture = $request->input('departure_date');
         $queryArrival = $request->input('arrival_date');
-
+        $querySeatClass = $request->input('seatClass');
 
         // retrieving the airport data
         $flight = Flight::find($id);
@@ -116,7 +117,7 @@ class SearchController extends Controller
             return view('user.booking-steps.passenger-details', compact(
                 'originAirportName',  'originAirportLocation', 'destinationAirportName', 'originAirportName',
                 'destinationAirportName', 'acquiredSeats',
-                'destinationAirportLocation', 'seats',
+                'destinationAirportLocation', 'seats', 'querySeatClass',
                 'result', 'departureTime', 'arrivalTime', 'adult', 'child', 'infant', 'originAirportCode', 'destinationAirportCode'));
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             // User not found
