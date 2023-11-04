@@ -95,6 +95,10 @@
                                 <h5> {{ substr($ticket->flight_no, 0, 2) }} {{ substr($ticket->flight_no, 2) }}</h5>
                             </div>
                             <div class="col-md-4">
+                                <p class="m-0 text-muted">Boarding Time</p>
+                                <h5> {{ \Carbon\Carbon::createFromFormat('h:i A', $ticket->departureTime)
+                                    ->subMinutes(30)
+                                    ->format('h:i A') }}</h5>
                             </div>
                             <div class="col-md-4">
                                 <p class="m-0 text-muted">Date</p>
@@ -159,6 +163,14 @@
                                 <p class="m-0 text-muted">Date</p>
                                 <h6 class="fw-bold">
                                     {{ $ticket->departure_date }}
+                                </h6>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="m-0 text-muted">Boarding Time</p>
+                                <h6 class="fw-bold">
+                                    {{ \Carbon\Carbon::createFromFormat('h:i A', $ticket->departureTime)
+                                    ->subMinutes(30)
+                                    ->format('h:i A') }}
                                 </h6>
                             </div>
                         </div>
