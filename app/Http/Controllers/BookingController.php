@@ -28,6 +28,7 @@ class BookingController extends Controller
      */
     public function store(Request $request)
     {
+
         $formFields = $request->validate([
             'user_id' => 'nullable',
             'flight_type' => 'nullable',
@@ -77,6 +78,12 @@ class BookingController extends Controller
         $specialAssistance[]  = $request->input("special_asssitance{$i}")[0];
     }
 
+    if (is_null($request->seat)) {
+        $seat = $this->generateRandomSeat();
+    } else {
+        $seat = $request->seat;
+    }
+
 
         Booking::create([
             'user_id' => auth()->user()->id,
@@ -97,14 +104,15 @@ class BookingController extends Controller
             'originAirportLocation' => $request->input('originAirportLocation'),
             'departureTime' => $request->input('departureTime'),
             'arrivalTime' => $request->input('arrivalTime'),
-            'seat' => $this->generateRandomSeat(),
+            'seat' => /* $this->generateRandomSeat(), */ $seat,
             'last_name' => implode('|',$last_name),
             'first_name' => implode('|',$first_name),
             'middle_initial' => implode('|',$middle_initial),
             'contact_number' => implode('|',$contact_number),
             'address' => implode('|',$address),
             'date_of_birth' => implode('|',$date_of_birth),
-            'pwd' => !empty($pwd) ? implode('|', $pwd) : null,            'special_asssitance' => implode('|',$specialAssistance),
+            'pwd' => !empty($pwd) ? implode('|', $pwd) : null,
+            'special_asssitance' => implode('|',$specialAssistance),
             'adds_on_baggage' => $request->input('adds_on_baggage'),
             'cancel' => $request->input('cancel'),
         ]);

@@ -112,6 +112,7 @@
     const selector_checkbox = document.getElementById('selector_checkbox');
     const selector_button_add = document.getElementById('selector_button_add');
     const baggage_card = document.getElementById('baggage_card');
+    const seat_card = document.getElementById('seat_card');
 
     if (baggage_checkbox.checked) {
                 baggage_button_add.textContent = 'ADDED ✓';
@@ -128,7 +129,7 @@
            // Change the button text based on checkbox state
            if (baggage_checkbox.checked) {
                 baggage_button_add.textContent = 'ADDED ✓';
-                baggage_card.style.display = 'block';;
+                baggage_card.style.display = 'block';
             } else {
                 baggage_button_add.textContent = 'ADD';
                 baggage_card.style.display = 'none';
@@ -137,8 +138,10 @@
 
     if (selector_checkbox.checked) {
                 selector_button_add.textContent = 'ADDED ✓';
+                seat_card.style.display = 'block';
             } else {
                 selector_button_add.textContent = 'ADD';
+                seat_card.style.display = 'none';
             }
 
     // Add click event listener to the button
@@ -148,8 +151,10 @@
            // Change the button text based on checkbox state
            if (selector_checkbox.checked) {
                 selector_button_add.textContent = 'ADDED ✓';
+                seat_card.style.display = 'block';
             } else {
                 selector_button_add.textContent = 'ADD';
+                seat_card.style.display = 'none';
             }
     });
 </script>

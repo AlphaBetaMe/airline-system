@@ -9,6 +9,7 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SuperAdminController;
+use App\Http\Controllers\TicketsController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -68,6 +69,12 @@ Route::group(['middleware' => ['auth', 'role:admin'], 'prefix' => 'admin'], func
 Route::group(['middleware' => ['auth', 'role:user'], 'prefix' => 'user'], function () {
     Route::get('dashboard', [UserController::class, 'index']);
     Route::resource('/booking', BookingController::class);
+});
+
+// Passenger Routes
+Route::group(['middleware' => ['auth', 'role:user']], function () {
+    Route::get('tickets', [TicketsController::class, 'index'])->name('tickets.index');
+    Route::get('tickets/{id}', [TicketsController::class, 'show'])->name('tickets.show');
 });
 
 // Search
