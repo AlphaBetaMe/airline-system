@@ -20,6 +20,34 @@ class SearchController extends Controller
         $queryArrival = $request->input('adultPassengers');
         $querySeatClass = $request->input('seatClassRoundtrip');
 
+        $originAirport = DB::table('airports')
+                            ->select('code', 'airport', 'location')
+                            ->where('id', $queryOrigin)
+                            ->first();
+        // destination
+        $destinationAirport = DB::table('airports')
+                            ->select('code', 'airport', 'location')
+                            ->where('id', $queryDestination)
+                            ->first();
+
+        if ($originAirport) {
+            $originAirportCode = $originAirport->code;
+            $originAirportName = $originAirport->airport;
+            $originAirportLocation = $originAirport->location;
+        } else {
+            // Handle case where airport with given ID is not found
+            dd('origin airport not found');
+        }
+
+        if ($destinationAirport) {
+            $destinationAirportCode = $destinationAirport->code;
+            $destinationAirportName = $destinationAirport->airport;
+            $destinationAirportLocation = $destinationAirport->location;
+        } else {
+            // Handle case where airport with given ID is not found
+            dd('destination airport not found');
+        }
+
         /* generate the flight id here */
 
         //* get the flights that match the query */
@@ -36,7 +64,12 @@ class SearchController extends Controller
 
 
         // Redirect to a results page and pass the search results
-        return view('user.flight-list', compact('results', 'querySeatClass', 'adult', 'child', 'infant'));
+        return view('user.flight-list', compact('results', 'querySeatClass', 'adult', 'child', 'infant',
+            'originAirportCode',
+            'queryDeparture',
+'queryArrival',
+            'originAirportLocation', 'destinationAirportCode', 'destinationAirportLocation'
+        ));
     }
 
     public function passengerDetails(Request $request, $id)
