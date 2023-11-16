@@ -9,7 +9,7 @@
                       <i class="fa fa-users fa-3x text-primary"></i>
                       <div class="ms-3">
                           <p class="mb-2">Total Passenger</p>
-                          <h6 class="mb-0"></h6>
+                          <h6 class="mb-0">{{ $totalPassengers }}</h6>
                       </div>
                   </div>
               </div>
@@ -18,19 +18,19 @@
                     <i class="fas fa-ticket-alt fa-3x text-primary"></i>
                       <div class="ms-3">
                           <p class="mb-2">Total Ticket</p>
-                          <h6 class="mb-0"></h6>
+                          <h6 class="mb-0">₱{{ $totalTicketAmount }}</h6>
                       </div>
                   </div>
               </div>
               <div class="col-sm-4 col-xl-4">
-                  <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
-                    <i class="fas fa-plane fa-3x text-primary"></i>
-                    <div class="ms-3">
-                        <p class="mb-2">Total Airplane</p>
-                        <h6 class="mb-0"></h6>
-                    </div>
-                  </div>
-              </div>
+                <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+                    <i class="fas fa-plane-departure fa-3x text-primary"></i>
+                      <div class="ms-3">
+                          <p class="mb-2">Total Flight</p>
+                          <h6 class="mb-0">{{ $flights }}</h6>
+                      </div>
+                </div>
+            </div>
 
           </div>
       </div>
@@ -46,15 +46,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-4 col-xl-4">
-                <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
-                    <i class="fas fa-plane-departure fa-3x text-primary"></i>
-                      <div class="ms-3">
-                          <p class="mb-2">Total Flight</p>
-                          <h6 class="mb-0">{{ $flights }}</h6>
-                      </div>
-                </div>
-            </div>
+    
             <div class="col-sm-4 col-xl-4">
                 <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
                     <i class="fa fa-building fa-3x text-primary"></i>
@@ -77,29 +69,39 @@
                 <table class="table text-center align-middle table-borderless table-hover mb-0">
                     <thead>
                         <tr class="text-white table-primary">
-                            <th scope="col">#</th>
-                            <th scope="col">Arrival</th>
-                            <th scope="col">Departure</th>
-                            <th scope="col">Destination</th>
-                            <th scope="col">Origin</th>
-                            <th scope="col">Airline</th>
-                            <th scope="col">Origin</th>
-                            <th scope="col">Airport</th>
-                            <th scope="col">Action</th>
+                            <th>Flight No.</th>
+                            <th>Departure Date</th>
+                            <th>Arrival Date</th>
+                            <th>Origin</th>
+                            <th>Departure</th>
+                            <th>Airline</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
+                        @if($todayFlights->isEmpty())
                         <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td colspan="7">No today's flight data</td>
                         </tr>
+                        @else
+                        @foreach ($todayFlights as $flight)
+                        <tr>
+                            <!-- Display non-delayed flight details -->
+                            <td>{{ substr($flight->flight_number, 0, 2) }} {{ substr($flight->flight_number, 2) }}</td>
+                            <td>{{ $flight->departure_date ? date('d M Y', strtotime($flight->departure_date)) : '' }}</td>
+                            <td>{{ $flight->arrival_date ? date('d M Y', strtotime($flight->arrival_date)) : '' }}</td>
+                            <td>{{ $flight->originAirport->location }} ({{ $flight->originAirport->code }})</td>
+                            <td>{{ $flight->destinationAirport->location }} ({{ $flight->destinationAirport->code  }})</td>
+                            <td>{{ $flight->airline->airline }}</td>
+                            <td>
+                                <form action="{{ url('admin/delay-flight', $flight->id) }}" method="post">
+                                    @csrf
+                                    <button type="submit" class="btn btn-warning btn-sm">Delay</button>
+                                </form>
+                            </td>
+                        </tr>
+                        @endforeach
+                        @endif
                     </tbody>
                 </table>
             </div>
@@ -116,34 +118,43 @@
                 <table class="table text-center align-middle table-borderless table-hover mb-0">
                     <thead>
                         <tr class="text-white table-primary">
-                            <th scope="col">#</th>
-                            <th scope="col">Arrival</th>
-                            <th scope="col">Departure</th>
-                            <th scope="col">Destination</th>
-                            <th scope="col">Origin</th>
-                            <th scope="col">Airline</th>
-                            <th scope="col">Origin</th>
-                            <th scope="col">Airport</th>
-                            <th scope="col">Action</th>
+                            <th>Flight No.</th>
+                            <th>Departure Date</th>
+                            <th>Arrival Date</th>
+                            <th>Origin</th>
+                            <th>Departure</th>
+                            <th>Airline</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody>     
+                        @if($delayedFlights->isEmpty())
                         <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td colspan="7">No today's flight issues data</td>
                         </tr>
+                        @else 
+                        @foreach ($delayedFlights as $flight)
+                        <tr>
+                            <!-- Display delayed flight details -->
+                            <td>{{ substr($flight->flight_number, 0, 2) }} {{ substr($flight->flight_number, 2) }}</td>
+                            <td>{{ $flight->departure_date ? date('d M Y', strtotime($flight->departure_date)) : '' }}</td>
+                            <td>{{ $flight->arrival_date ? date('d M Y', strtotime($flight->arrival_date)) : '' }}</td>
+                            <td>{{ $flight->originAirport->location }} ({{ $flight->originAirport->code }})</td>
+                            <td>{{ $flight->destinationAirport->location }} ({{ $flight->destinationAirport->code  }})</td>
+                            <td>{{ $flight->airline->airline }}</td>
+                            <td>
+                                <form action="{{ url('admin/move-back', $flight->id) }}" method="post">
+                                    @csrf
+                                    <button type="submit" class="btn btn-info btn-sm">Move</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                    @endif
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
       <!-- Admin Dashboard End -->
-
 @endsection

@@ -21,7 +21,7 @@
 }">
     @csrf
     <!-- This inputs is need to store after booking (submitting the form) -->
-    <input name="flight_type" id="flight_type" type="hidden" value="{{ $result->flight_type }}">
+    <input name="flight_type" id="flight_type" type="hidden" value="{{ $queryFlightType }}">
     <input name="airline" id="airline" type="hidden" value="{{ $result->airline->airline }}">
     <input x-model="flight_number" name="flight_no" id="flight_no" type="hidden">
     <input x-model="departure_date" name="departure_date" id="departure_date" type="hidden">
@@ -62,32 +62,32 @@
                     <div class="row mb-3">
                         <div class="col-md-4 mb-3">
                             <label for="last_name{{ $i }}" class="mb-2">Last Name</label>
-
-                            <input type="text" x-model="inputs[{{ $i - 1 }}].lastName" id="last_name{{ $i }}"
-                                class="form-control" name="last_name[]" required>
+                            <input type="text" x-model="inputs[{{ $i - 1 }}].lastName" id="last_name{{ $i }}" class="form-control"
+                                name="last_name[]" required placeholder="Enter Last Name" pattern="[A-Za-z]+" title="Only letters are allowed" p>
                         </div>
                         <div class="col-md-4 mb-3">
                             <label for="first_name{{ $i }}" class="mb-2">First Name</label>
-
-                            <input type="text" x-model="inputs[{{ $i - 1 }}].firstName" id="first_name{{ $i }}"
-                                class="form-control" name="first_name[]" required>
+                            <input type="text" x-model="inputs[{{ $i - 1 }}].firstName" id="first_name{{ $i }}" class="form-control"
+                                name="first_name[]" required placeholder="Enter First Name" pattern="[A-Za-z]+" title="Only letters are allowed">
                         </div>
-
                         <div class="col-md-4 mb-3">
                             <label for="middle_initial{{ $i }}" class="mb-2">Middle Initial</label>
                             <input type="text" x-model="inputs[{{ $i - 1 }}].middleInitial" id="middle_initial{{ $i }}"
-                                class="form-control" name="middle_initial[]" required>
+                                class="form-control" name="middle_initial[]" required placeholder="Enter Middle Initial">
                         </div>
                         <div class="col-md-4 mb-3">
                             <label for="contact_number{{ $i }}" class="mb-2">Contact Number</label>
-                            <input type="text" x-model="inputs[{{ $i - 1 }}].contactNumber" id="contact_number{{ $i }}"
-                                class="form-control" name="contact_number[]" required>
+                            <input type="text" x-model="inputs[{{ $i - 1 }}].contactNumber" id="contact_number{{ $i }}" class="form-control"
+                            name="contact_number[]" required placeholder="+63 123 456 7890" 
+                            pattern="\+?\d{1,3} ?\d{1,4} ?\d{1,4} ?\d{1,4}" title="Invalid format. Use +63 XXX YYY ZZZZ or XXX YYY ZZZZ">
                         </div>
+
                         <div class="col-md-4 mb-3">
                             <label for="address{{ $i }}" class="mb-2">Address</label>
-                            <input type="text" x-model="inputs[{{ $i - 1 }}].address"" id=" address{{ $i }}"
-                                class="form-control" name="address[]" required>
+                            <input type="text" x-model="inputs[{{ $i - 1 }}].address" id=" address{{ $i }}"
+                                class="form-control" name="address[]" required placeholder="Enter Address">
                         </div>
+
                         <div class="col-md-4 mb-3">
                             <label for="date_of_birth{{ $i }}" class="mb-2">Date of Birth</label>
                             <input type="date" x-model="inputs[{{ $i - 1 }}].dateOfBirth" id="date_of_birth{{ $i }}"
@@ -171,6 +171,11 @@
 
         // Function to go to the next step
         function nextStep(step) {
+                // Validate name and contact number
+        if (!validateName() || !validateContactNumber()) {
+            alert("Please correct the input fields before proceeding.");
+            return;
+        }
             updateStep(step);
             history.pushState({ step: currentStep }, '', window.location.href);
         }
@@ -183,6 +188,28 @@
             updateStep(step);
             history.pushState({ step: currentStep }, '', window.location.href);
         }
+
+            // Validation function for name fields
+    function validateName() {
+        const nameInputs = document.querySelectorAll('[id^="last_name"], [id^="first_name"]');
+        for (const input of nameInputs) {
+            if (!/^[A-Za-z]+$/.test(input.value)) {
+                alert("Invalid name. Only letters are allowed.");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // Validation function for contact number field
+    function validateContactNumber() {
+        const contactNumberInput = document.getElementById('contact_number' + currentStep);
+        if (!/\+?\d{1,3} ?\d{1,4} ?\d{1,4} ?\d{1,4}/.test(contactNumberInput.value)) {
+            alert("Invalid contact number format. Use +63 XXX YYY ZZZZ or XXX YYY ZZZZ");
+            return false;
+        }
+        return true;
+    }
 
         // When the page loads, set the initial step
         document.addEventListener('DOMContentLoaded', function() {

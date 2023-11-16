@@ -45,7 +45,13 @@
                             <h6>Departure Time: </h6>{{ $flight->departure_time ? date('h:i A', strtotime($flight->departure_time)) : '' }}
                             <h6>Arrival Date: </h6>{{ $flight->arrival_date ? date('d M Y', strtotime($flight->arrival_date)) : '' }}
                             <h6>Arrival Time: </h6>{{ $flight->arrival_time ? date('h:i A', strtotime($flight->arrival_time)) : '' }}
-                            <h6>Duration: </h6>{{ $flight->formattedDuration() }}
+                            <h6>Duration: </h6> {{ $flight->formatted_duration }}
+                            @if ($flight->flight_type === 'round_trip')
+                            <h6>Return Departure Date: </h6>{{ $flight->departure_date_return ? date('d M Y', strtotime($flight->departure_date_return)) : '' }}
+                            <h6>Return Departure Time: </h6>{{ $flight->departure_time_return ? date('h:i A', strtotime($flight->departure_time_return)) : '' }}
+                            <h6>Return Arrival Date: </h6>{{ $flight->arrival_date_return ? date('d M Y', strtotime($flight->arrival_date_return)) : '' }}
+                            <h6>Return Arrival Time: </h6>{{ $flight->arrival_time_return ? date('h:i A', strtotime($flight->arrival_time_return)) : '' }}
+                        @endif
                         </td>
                         <td>&#8369; {{ $flight->price }}</td>
                         <td>

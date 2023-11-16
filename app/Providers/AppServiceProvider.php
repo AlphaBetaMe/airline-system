@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Http\Controllers\NotificationController;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +21,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        $notificationController = app(NotificationController::class);
+        $userNotification = $notificationController->getUserNotifications();
+    
+        View::share('userNotification', $userNotification);
+    
     }
 }

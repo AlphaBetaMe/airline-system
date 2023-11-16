@@ -9,7 +9,7 @@ class TicketsController extends Controller
 {
     public function index()
     {
-        $tickets = Booking::where('user_id', auth()->user()->id)->get();
+        $tickets = Booking::where('user_id', auth()->user()->id)->latest()->get();
         return view('user.tickets.index', compact('tickets'));
     }
 

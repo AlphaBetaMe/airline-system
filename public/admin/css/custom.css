@@ -24,3 +24,11 @@
 .brand-letter-s {  
     color: #FFFFFF;
 }
+
+.form-select.update{
+    background-color: #e9ecef;
+}
+
+.form-control.update{
+    background-color: #e9ecef;
+}

@@ -15,8 +15,10 @@ class Booking extends Model
         'airline',
         'flight_no',
         'departure_date',
+        'arrival_date',
         'duration',
         'price',
+        'status',
         'adultPassengers',
         'childPassengers',
         'infantPassengers',
@@ -40,7 +42,11 @@ class Booking extends Model
         'adds_on_baggage',
         'seatClass',
         'gate',
-        'cancel',
+        'ticket_id',
     ];
 
+    public function user()
+{
+    return $this->belongsTo(User::class);
+}
 }

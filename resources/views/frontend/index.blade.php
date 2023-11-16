@@ -51,14 +51,16 @@
                         </div>
                         <div class="col-md-4 mb-3">
                             <label for="departure_date" class="mb-2">Departure Date</label>
-                            <input type="date" class="form-control" name="departure_date" placeholder=" " required>
+                            <input min="{{ $date }}" type="date" class="form-control" name="departure_date"
+                                placeholder=" " required>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-4 mb-3" id="onewayContent">
                             <label for="arrival_date" class="mb-2">Return Date</label>
-                            <input type="date" class="form-control" name="arrival_date" placeholder=" ">
+                            <input min="{{ $date }}" type="date" class="form-control" name="arrival_date"
+                                placeholder=" ">
                         </div>
                         <div class="col-md-4 mb-3">
                             <label for="seatClassRoundtrip" class="mb-2">Seat Class</label>
@@ -181,7 +183,7 @@
             }
             childrenBtnIncrement.addEventListener("click", childrenhandleIncrement);
             childrenBtnDecrement.addEventListener("click", childrenhandleDecrement);
-        /* infanrts */
+        /* infants */
         const infantBtnIncrement = document.querySelector('#incrementInfants');
             const infantBtnDecrement = document.querySelector('#decrementInfants');
              let countInfant = document.getElementById('infantPassengers');
@@ -193,9 +195,35 @@
             }
             infantBtnIncrement.addEventListener("click", infanthandleIncrement);
             infantBtnDecrement.addEventListener("click", infanthandleDecrement);
-    });
 
+            const originSelect = document.getElementById('origin_id');
+            const destinationSelect = document.querySelector('[name="destination_id"]');
+            const form = document.querySelector('form');
 
+            // Initialize the options
+            const options = Array.from(destinationSelect.options);
+
+            originSelect.addEventListener('change', function () {
+                const selectedOrigin = this.value;
+
+                options.forEach(option => {
+                    option.style.display = 'block';
+                    if (option.value === selectedOrigin) {
+                        option.style.display = 'none';
+                    }
+                });
+            });
+
+            form.addEventListener('submit', function (event) {
+                const selectedOrigin = originSelect.value;
+                const selectedDestination = destinationSelect.value;
+
+                if (selectedOrigin === selectedDestination) {
+                    event.preventDefault(); // Prevent form submission
+                    alert('Departure and Arrival must be different.')
+                }
+            });
+        });
 </script>
 
 @endsection

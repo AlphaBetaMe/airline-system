@@ -21,7 +21,12 @@ class Flight extends Model
         'arrival_time',
         'price',
         'flight_number',
-        'airline_id'
+        'airline_id',
+        'departure_date_return',
+        'arrival_date_return',
+        'departure_time_return',
+        'arrival_time_return',
+        'return_flight_number',
     ];
 
     public function airline()
@@ -51,5 +56,8 @@ class Flight extends Model
     return $hours . 'h ' . $minutes . 'm';
 }
 
-
+    public function duration()
+    {
+        return $this->duration;
+    }
 }

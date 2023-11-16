@@ -16,18 +16,18 @@ class DefaultAdminSeeder extends Seeder
     {
         User::create([
             'first_name' => 'Sample',
-            'last_name' => 'Admin',
-            'email' => 'afrs02642@gmail.com',
-            'password' => Hash::make('password'),
-            'role' => 'admin',
-        ]);
-
-        User::create([
-            'first_name' => 'Sample',
             'last_name' => 'Superadmin',
             'email' => 'superadmin@gmail.com',
             'password' => Hash::make('password'),
             'role' => 'superadmin',
+        ]);
+        
+        User::create([
+            'first_name' => 'Sample',
+            'last_name' => 'Admin',
+            'email' => 'afrs02642@gmail.com',
+            'password' => Hash::make('password'),
+            'role' => 'admin',
         ]);
     }
 }

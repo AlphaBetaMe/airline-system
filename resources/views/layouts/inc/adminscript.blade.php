@@ -11,3 +11,29 @@
 
     <!-- Template Javascript -->
     <script src="{{ asset('admin/js/main.js') }}"></script>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        // Add event listener to radio buttons
+        const roundtripOption = document.getElementById('roundtripOption');
+        const roundtripContent = document.getElementById('roundtripContent');
+        const onewayOption = document.getElementById('onewayOption');
+        const onewayContent = document.getElementById('onewayContent');
+
+
+        if(onewayOption.checked === true) {
+            onewayContent.style.display = 'none';
+        } else {
+            onewayContent.style.display = 'block';
+        }
+
+        roundtripOption.addEventListener('change', () => {
+            onewayContent.style.display = 'block';
+        });
+
+        onewayOption.addEventListener('change', () => {
+            onewayContent.style.display = 'none';
+        });
+    });
+    </script>
+    

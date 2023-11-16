@@ -9,13 +9,22 @@
                 <div class="card-body">
                     <h2 class="mb-2 text-center text-primary">TICKETS</h2>
                     <div class="d-flex align-items-center justify-content-between">
-                        <button class="btn btn-danger" type="button" data-bs-toggle="modal"
-                            data-bs-target="#myModal">Cancel Flight</button>
+                        <form action="{{ route('cancel-flight') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="id" value="{{ $ticket->id }}">
+                            <input class="d-none" type="checkbox" checked name="status" disabled="disabled">
+                            <button class="btn btn-danger" type="submit" data-bs-toggle="modal"
+                                data-bs-target="#myModal">Cancel Flight</button>
+                        </form>
                         <button class="btn btn-primary" type="button" data-bs-toggle="modal"
                             data-bs-target="#myModal">Print</button>
                     </div>
                 </div>
             </div>
+        </div>
+          <!-- Rate Experience Button -->
+          <div class="text-end mb-3">
+            <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#rateModal">Rate Experience</button>
         </div>
     </div>
 
@@ -26,6 +35,8 @@
     $first_names = explode('|', $ticket->first_name);
     $middle_initials = explode('|', $ticket->middle_initial);
     $last_names = explode('|', $ticket->last_name);
+    $seat = explode('|', $ticket->seat);
+    $ticket_id = explode('|', $ticket->ticket_id);
     @endphp
 
 
@@ -112,7 +123,7 @@
                             </div>
                             <div class="col-md-3">
                                 <p class="m-0 text-muted">Seat</p>
-                                <h5>{{ $ticket->seat }}</h5>
+                                <h5>{{ $seat[$i - 1] }}</h5>
                             </div>
                             <div class="col-md-3">
                                 <p class="m-0 text-muted">Departure</p>
@@ -123,7 +134,13 @@
                                 <h5>{{ $ticket->arrivalTime }}</h5>
                             </div>
                         </div>
-                    </div>
+                            <div class="row mb-3">
+                                <div class="col-md-3">
+                                    <p class="m-0 text-muted">Ticket ID</p>
+                                    <h5>{{ $ticket_id[$i - 1] ?? null }} </h5>
+                                </div>
+                            </div>
+                        </div>
                     <div class="col-md-4 dashed-border">
                         <div class="row mb-3">
                             <div class="col-md-6">
@@ -184,7 +201,7 @@
                             <div class="col-md-4">
                                 <p class="m-0 text-muted">Seat</p>
                                 <h6 class="fw-bold">
-                                    {{ $ticket->seat }}
+                                    {{ $seat[$i - 1] }}
                                 </h6>
                             </div>
                             <div class="col-md-4">
@@ -200,15 +217,92 @@
                                 </h6>
                             </div>
                         </div>
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <p class="m-0 text-muted">Ticket ID</p>
+                                <h6 class="fw-bold">
+                                    {{ $ticket_id[$i - 1] ?? null }}
+                                </h6>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
         </div>
 </div>
-@endfor
-</div>
 
+
+@if (in_array($seat[$i - 1], ["A1", "A2", "A3", "A4", "A5"]))
+@php
+$seat_prices[] = 390;
+@endphp
+@elseif (in_array($seat[$i - 1], ["B1", "B2", "B3", "B4", "B5"]))
+@php
+$seat_prices[] = 245;
+@endphp
+@else
+@php
+$seat_prices[] = 200;
+@endphp
+@endif
+
+@php
+$total_seat_price = array_sum($seat_prices);
+@endphp
+
+@endfor
+
+<div class="rounded-1 p-2 card">
+    <h4>
+        @php
+        $baggage_array = explode('|', $ticket->adds_on_baggage);
+        $baggage_sum = array_sum($baggage_array);
+        @endphp
+        Price: ₱{{ $ticket->price * $numberofPassengers + $baggage_sum + $total_seat_price }}
+
+    </h4>
+</div>
+</div>
+   
+
+    <!-- Modal -->
+    <div class="modal fade" id="rateModal" tabindex="-1" aria-labelledby="rateModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="rateModalLabel">Rate Your Experience</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('rate-flight') }}" method="POST">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="rating" class="form-label">Rating</label>
+                            <div class="star-rating">
+                                <input type="radio" id="star5" name="rating" value="5" />
+                                <label for="star5" title="5 stars"></label>
+                                <input type="radio" id="star4" name="rating" value="4" />
+                                <label for="star4" title="4 stars"></label>
+                                <input type="radio" id="star3" name="rating" value="3" />
+                                <label for="star3" title="3 stars"></label>
+                                <input type="radio" id="star2" name="rating" value="2" />
+                                <label for="star2" title="2 stars"></label>
+                                <input type="radio" id="star1" name="rating" value="1" />
+                                <label for="star1" title="1 star"></label>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="comment" class="form-label">Comment</label>
+                            <textarea class="form-control" id="comment" name="comment" rows="3"></textarea>
+                        </div>
+                        <input type="hidden" name="ticket_id" value="{{ $ticket->id }}">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
 @endsection
 
@@ -218,5 +312,27 @@
         /* You can adjust the color and width */
         padding-left: 10px;
         /* Add padding to separate content from the border */
+    }
+</style>
+
+<style>
+    /* Add this to your existing styles or create a new style block */
+    .star-rating input[type="radio"] {
+        display: none;
+    }
+
+    .star-rating label {
+        font-size: 1.5em;
+        padding: 0.3em;
+        cursor: pointer;
+        float: right;
+    }
+
+    .star-rating label:before {
+        content: '\2605'; /* Unicode character for a star */
+    }
+
+    .star-rating input[type="radio"]:checked~label:before {
+        color: #ffcc00; /* Color for the selected stars */
     }
 </style>

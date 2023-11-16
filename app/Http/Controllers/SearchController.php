@@ -15,10 +15,11 @@ class SearchController extends Controller
         $queryOrigin = $request->input('origin_id');
         $queryDestination = $request->input('destination_id');
         $queryDeparture = $request->input('departure_date');
-        $queryArrival = $request->input('arrival_date');
-        $queryAdultPassenger = $request->input('arrival_date');
-        $queryArrival = $request->input('adultPassengers');
+        $queryDepartureReturn = $request->input('departure_date_return');
+        $queryArrival = $request->input('arrival_date_return');
+        $queryAdultPassenger = $request->input('adultPassengers');
         $querySeatClass = $request->input('seatClassRoundtrip');
+        $queryFlightType = $request->input('flight_type');
 
         $originAirport = DB::table('airports')
                             ->select('code', 'airport', 'location')
@@ -54,8 +55,9 @@ class SearchController extends Controller
         $results = Flight::where('origin_id', 'like', '%' . $queryOrigin . '%')
                 ->where('destination_id', 'like', '%' . $queryDestination . '%')
                 ->where('departure_date', 'like', '%' . $queryDeparture . '%')
-                ->where('arrival_date', 'like', '%' . $queryArrival . '%')
+                ->where('departure_date_return', 'like', '%' . $queryArrival . '%')
                 ->get();
+
 
         /* get the number of adult, child and infants in query */
          $adult = $request->adultPassengers;
@@ -68,12 +70,89 @@ class SearchController extends Controller
             'originAirportCode',
             'queryDeparture',
 'queryArrival',
+            'originAirportLocation', 'destinationAirportCode', 'destinationAirportLocation',
+            'queryFlightType'
+        ));
+    }
+
+
+    public function returnSearchResults(Request $request)
+    {
+        $queryOrigin = $request->input('origin_id');
+        $queryDestination = $request->input('destination_id');
+        $queryDeparture = $request->input('departure_date_return');
+        $queryArrival = $request->input('arrival_date_return');
+        $queryAdultPassenger = $request->input('adultPassengers');
+        $querySeatClass = $request->input('seatClassRoundtrip');
+        $queryFlightType = $request->input('flight_type');
+
+        $originAirport = DB::table('airports')
+                            ->select('code', 'airport', 'location')
+                            ->where('id', $queryOrigin)
+                            ->first();
+        // destination
+        $destinationAirport = DB::table('airports')
+                            ->select('code', 'airport', 'location')
+                            ->where('id', $queryDestination)
+                            ->first();
+
+
+        if ($originAirport) {
+            $originAirportCode = $originAirport->code;
+            $originAirportName = $originAirport->airport;
+            $originAirportLocation = $originAirport->location;
+        } else {
+            // Handle case where airport with given ID is not found
+            dd('origin airport not found');
+        }
+
+        if ($destinationAirport) {
+            $destinationAirportCode = $destinationAirport->code;
+            $destinationAirportName = $destinationAirport->airport;
+            $destinationAirportLocation = $destinationAirport->location;
+        } else {
+            // Handle case where airport with given ID is not found
+            dd('destination airport not found');
+        }
+
+        /* generate the flight id here */
+
+        //* get the flights that match the query */
+     /*    $results = Flight::where('origin_id', 'like', '%' . $queryOrigin . '%')
+        ->where('destination_id', 'like', '%' . $queryDestination . '%')
+        ->where('departure_date_return', 'like', '%' . $queryDeparture . '%')
+        ->where('arrival_date_return', 'like', '%' . $queryArrival . '%')
+        ->get();
+        dd($results);
+ */
+        $results = Flight::where('origin_id', 'like', '%' . $queryOrigin . '%')
+                ->where('destination_id', 'like', '%' . $queryDestination . '%')
+                ->where('departure_date_return', 'like', '%' . $queryDeparture . '%')
+                ->where('arrival_date_return', 'like', '%' . $queryArrival . '%')
+                ->get();
+
+
+
+
+        /* get the number of adult, child and infants in query */
+         $adult = $request->adultPassengers;
+         $child = $request->childPassengers;
+         $infant = $request->infantPassengers;
+
+
+        // Redirect to a results page and pass the search results
+        return view('user.return-flight-list', compact('results', 'querySeatClass', 'adult', 'child', 'infant',
+            'originAirportCode',
+            'queryDeparture',
+'queryArrival',
+'queryFlightType',
             'originAirportLocation', 'destinationAirportCode', 'destinationAirportLocation'
         ));
     }
 
     public function passengerDetails(Request $request, $id)
     {
+        $queryFlightType = $request->input('flight_type');
         $queryOrigin = $request->input('origin_id');
         $queryDestination = $request->input('destination_id');
         $queryDeparture = $request->input('departure_date');
@@ -148,6 +227,7 @@ class SearchController extends Controller
          $acquiredSeats = Booking::where('originAirportCode', $originAirportCode)->where('destinationAirportCode', $destinationAirportCode)->pluck('seat')->toArray();
 
             return view('user.booking-steps.passenger-details', compact(
+                'flight', 'queryFlightType',
                 'originAirportName',  'originAirportLocation', 'destinationAirportName', 'originAirportName',
                 'destinationAirportName', 'acquiredSeats',
                 'destinationAirportLocation', 'seats', 'querySeatClass',

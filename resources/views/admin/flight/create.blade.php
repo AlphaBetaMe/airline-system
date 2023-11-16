@@ -75,6 +75,37 @@
                 </div>
             </div>
 
+            
+            <div class="row" id="onewayContent">
+                <div class="col mb-3">
+                    <div class="form-floating">
+                        <input type="date" class="form-control" name="departure_date_return" placeholder=" ">
+                        <label for="departure_date_return">Departure Date (Return)</label>
+                    </div>
+                </div>
+
+                <div class="col mb-3">
+                    <div class="form-floating">
+                        <input type="date" class="form-control" name="arrival_date_return" placeholder=" ">
+                        <label for="arrival_date_return">Arrival Date (Return)</label>
+                    </div>
+                </div>
+           
+                <div class="col mb-3">
+                    <div class="form-floating">
+                        <input type="time" class="form-control" name="departure_time_return" placeholder=" ">
+                        <label for="departure_time_return">Departure Time (Return)</label>
+                    </div>
+                </div>
+
+                <div class="col mb-3">
+                    <div class="form-floating">
+                        <input type="time" class="form-control" name="arrival_time_return" placeholder=" ">
+                        <label for="arrival_time_return">Arrival Time (Return)</label>
+                    </div>
+                </div>
+            </div>
+
             <div class="form-floating mb-3">
                 <input type="number" class="form-control" name="price" placeholder=" " required>
                 <label for="price">Price</label>

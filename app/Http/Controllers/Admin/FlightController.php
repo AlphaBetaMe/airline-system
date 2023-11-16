@@ -42,9 +42,14 @@ class FlightController extends Controller
             'departure_time' => 'required|date_format:H:i',
             'arrival_date' => 'required|date_format:Y-m-d',
             'arrival_time' => 'required|date_format:H:i',
+            'departure_date_return' => 'date_format:Y-m-d',
+            'arrival_date_return' => 'date_format:Y-m-d',
+            'departure_time_return' => 'date_format:H:i',
+            'arrival_time_return' => 'date_format:H:i',
             'price' => 'required|numeric',
             'airline_id' => 'required',
             'flight_number' => 'nullable',
+            'return_flight_number' => 'nullable',
         ];
 
         // Apply the validation rules to the request data
@@ -57,6 +62,7 @@ class FlightController extends Controller
         }
 
         $flightNumber = generateUniqueFlightNumber();
+        $flightNumberReturn = generateUniqueFlightNumber();
 
         $flight = new Flight();
         $flight->flight_type = $request->input('flight_type');
@@ -66,13 +72,24 @@ class FlightController extends Controller
         $flight->arrival_date = $request->input('arrival_date');
         $flight->departure_time = $request->input('departure_time');
         $flight->arrival_time = $request->input('arrival_time');
+
+        $flight->departure_date_return = $request->input('departure_date_return');
+        $flight->arrival_date_return = $request->input('arrival_date_return');
+        $flight->departure_time_return = $request->input('departure_time_return');
+        $flight->arrival_time_return = $request->input('arrival_time_return');
         $flight->price = $request->input('price');
         $flight->airline_id = $request->input('airline_id');
         $flight->flight_number = $flightNumber;
+        $flight->return_flight_number = $flightNumberReturn;
 
-        // Parse departure and arrival date and time as Carbon DateTime objects
+        //Parse departure and arrival date and time as Carbon DateTime objects
         $departureDateTime = Carbon::parse($flight->departure_date . ' ' . $flight->departure_time);
         $arrivalDateTime = Carbon::parse($flight->arrival_date . ' ' . $flight->arrival_time);
+
+        // Check if arrival time is earlier than departure time
+        if ($arrivalDateTime < $departureDateTime) {
+            $arrivalDateTime->addDay(); // Add a day to the arrival time
+        }
 
         // Calculate the duration in seconds
         $durationInSeconds = $arrivalDateTime->diffInSeconds($departureDateTime);
@@ -83,28 +100,28 @@ class FlightController extends Controller
         $minutes = floor(($durationInSeconds % (60 * 60)) / 60);
 
         // Format the duration
-        $formattedDuration = "";
+        $duration = "";
 
         if ($days > 0) {
-            $formattedDuration .= $days . 'd ';
+            $duration .= $days . 'd ';
         }
 
         if ($hours > 0) {
-            $formattedDuration .= $hours . 'h ';
+            $duration .= $hours . 'h ';
         }
 
         if ($minutes > 0) {
-            $formattedDuration .= $minutes . 'm';
+            $duration .= $minutes . 'm';
         }
 
-        $flight->duration = $formattedDuration;
+        $flight->duration = $duration;
 
 
         $flight->save();
 
         return redirect('admin/flight');
     }
-
+ 
 
     public function edit($id)
     {
@@ -116,6 +133,15 @@ class FlightController extends Controller
 
     public function update(Request $request, $id)
     {
+        function generateUniqueFlightNumber() {
+            $prefix = "FR";
+            $randomNumbers = str_pad(rand(0, 999), 3, '0', STR_PAD_LEFT);
+            return $prefix . $randomNumbers;
+        }
+
+        $flightNumber = generateUniqueFlightNumber();
+        $flightNumberReturn = generateUniqueFlightNumber();
+
         $flight = Flight::find($id);
         $flight->flight_type = $request->input('flight_type');
         $flight->origin_id = $request->input('origin_id');
@@ -124,12 +150,24 @@ class FlightController extends Controller
         $flight->arrival_date = $request->input('arrival_date');
         $flight->departure_time = $request->input('departure_time');
         $flight->arrival_time = $request->input('arrival_time');
+
+        $flight->departure_date_return = $request->input('departure_date_return');
+        $flight->arrival_date_return = $request->input('arrival_date_return');
+        $flight->departure_time_return = $request->input('departure_time_return');
+        $flight->arrival_time_return = $request->input('arrival_time_return');
         $flight->price = $request->input('price');
         $flight->airline_id = $request->input('airline_id');
-
-        // Parse departure and arrival date and time as Carbon DateTime objects
+        $flight->flight_number = $flightNumber;
+        $flight->return_flight_number = $flightNumberReturn;
+        
+       // Parse departure and arrival date and time as Carbon DateTime objects
         $departureDateTime = Carbon::parse($flight->departure_date . ' ' . $flight->departure_time);
         $arrivalDateTime = Carbon::parse($flight->arrival_date . ' ' . $flight->arrival_time);
+
+        // Check if arrival time is earlier than departure time
+        if ($arrivalDateTime < $departureDateTime) {
+            $arrivalDateTime->addDay(); // Add a day to the arrival time
+        }
 
         // Calculate the duration in seconds
         $durationInSeconds = $arrivalDateTime->diffInSeconds($departureDateTime);
@@ -140,21 +178,22 @@ class FlightController extends Controller
         $minutes = floor(($durationInSeconds % (60 * 60)) / 60);
 
         // Format the duration
-        $formattedDuration = "";
+        $duration = "";
 
         if ($days > 0) {
-            $formattedDuration .= $days . 'd ';
+            $duration .= $days . 'd ';
         }
 
         if ($hours > 0) {
-            $formattedDuration .= $hours . 'h ';
+            $duration .= $hours . 'h ';
         }
 
         if ($minutes > 0) {
-            $formattedDuration .= $minutes . 'm';
+            $duration .= $minutes . 'm';
         }
 
-        $flight->duration = $formattedDuration;
+        $flight->duration = $duration;
+
 
         $flight->update();
 

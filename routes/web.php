@@ -1,14 +1,19 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\Admin\AirlineController;
-use App\Http\Controllers\Admin\AirportController;
-use App\Http\Controllers\Admin\FlightController;
-use App\Http\Controllers\Admin\PassengerController;
+use App\Http\Controllers\Admin\AirlineController as AdminAirlineController;
+use App\Http\Controllers\Admin\AirportController as AdminAirportController;
+use App\Http\Controllers\Admin\FlightController as AdminFlightController;
+use App\Http\Controllers\Admin\PassengerController as AdminPassengerController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\SearchController;
-use App\Http\Controllers\SuperAdminController;
+use App\Http\Controllers\Superadmin\SuperadminController;
+use App\Http\Controllers\Superadmin\FlightController as SuperadminFlightController;
+use App\Http\Controllers\Superadmin\AirlineController as SuperadminAirlineController;
+use App\Http\Controllers\Superadmin\AirportController as SuperadminAirportController;
+use App\Http\Controllers\Superadmin\PassengerController as SuperadminPassengerController;
 use App\Http\Controllers\TicketsController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
@@ -31,7 +36,41 @@ Auth::routes(['verify' => true]);
 
 // Superadmin Routes
 Route::group(['middleware' => ['auth', 'role:superadmin'], 'prefix' => 'superadmin'], function () {
-    Route::get('/dashboard', [SuperAdminController::class, 'index']);
+
+    // Superadmin Dashboard
+    Route::get('dashboard', [SuperadminController::class, 'index']);
+    Route::post('delay-flight/{id}', [SuperadminController::class, 'delayFlight']);
+    Route::post('move-back/{id}', [SuperadminController::class, 'moveFlight']);
+    Route::get('user-lists', [SuperadminController::class, 'user']);
+
+    // Flight Routes
+    Route::get('flight-lists', [SuperadminFlightController::class,'index']);
+    Route::get('create-flight', [SuperadminFlightController::class,'create']);
+    Route::post('store-flight', [SuperadminFlightController::class, 'store']);
+    Route::get('edit-flight/{id}', [SuperadminFlightController::class, 'edit']);
+    Route::put('update-flight/{id}', [SuperadminFlightController::class, 'update']);
+
+    // Airline Routes
+    Route::get('airline-lists', [SuperadminAirlineController::class, 'index']);
+    Route::get('create-airline', [SuperadminAirlineController::class, 'create']);
+    Route::post('store-airline', [SuperadminAirlineController::class, 'store']);
+    Route::get('edit-airline/{id}', [SuperadminAirlineController::class, 'edit']);
+    Route::put('update-airline/{id}', [SuperadminAirlineController::class, 'update']);
+
+    // Airport Routes
+    Route::get('airport-lists', [SuperadminAirportController::class, 'index']);
+    Route::get('create-airport', [SuperadminAirportController::class, 'create']);
+    Route::post('store-airport', [SuperadminAirportController::class, 'store']);
+    Route::get('edit-airport/{id}', [SuperadminAirportController::class, 'edit']);
+    Route::put('update-airport/{id}', [SuperadminAirportController::class, 'update']);
+
+    // Passenger List Routes
+    Route::get('passenger-lists', [SuperadminPassengerController::class, 'index']);
+    Route::get('view-details/{id}', [SuperadminPassengerController::class, 'show']);
+    Route::put('update-tickets/{id}', [SuperadminPassengerController::class, 'updateTicket']);
+    Route::get('passenger-history', [SuperadminPassengerController::class, 'history']);
+    
+
 });
 
 // Admin Routes
@@ -39,45 +78,59 @@ Route::group(['middleware' => ['auth', 'role:admin'], 'prefix' => 'admin'], func
 
     // Admin Dashboard
     Route::get('dashboard', [AdminController::class, 'index']);
-
+    Route::post('delay-flight/{id}', [AdminController::class, 'delayFlight']);
+    Route::post('move-back/{id}', [AdminController::class, 'moveFlight']);
+    
+    
     // Flight Routes
-    Route::get('flight', [FlightController::class, 'index']);
-    Route::get('create-flight', [FlightController::class, 'create']);
-    Route::post('store-flight', [FlightController::class, 'store']);
-    Route::get('edit-flight/{id}', [FlightController::class, 'edit']);
-    Route::put('update-flight/{id}', [FlightController::class, 'update']);
+    Route::get('flight', [AdminFlightController::class, 'index']);
+    Route::get('create-flight', [AdminFlightController::class, 'create']);
+    Route::post('store-flight', [AdminFlightController::class, 'store']);
+    Route::get('edit-flight/{id}', [AdminFlightController::class, 'edit']);
+    Route::put('update-flight/{id}', [AdminFlightController::class, 'update']);
 
     // Passenger List Routes
-    Route::get('passenger', [PassengerController::class, 'index']);
+    Route::get('passenger', [AdminPassengerController::class, 'index']);
+    Route::get('view-details/{id}', [AdminPassengerController::class, 'show']);
+    Route::put('update-tickets/{id}', [AdminPassengerController::class, 'updateTicket']);
+    Route::get('passenger-history', [AdminPassengerController::class, 'history']);
 
     // Airline Routes
-    Route::get('airline', [AirlineController::class, 'index']);
-    Route::get('create-airline', [AirlineController::class, 'create']);
-    Route::post('store-airline', [AirlineController::class, 'store']);
-    Route::get('edit-airline/{id}', [AirlineController::class, 'edit']);
-    Route::put('update-airline/{id}', [AirlineController::class, 'update']);
+    Route::get('airline', [AdminAirlineController::class, 'index']);
+    Route::get('create-airline', [AdminAirlineController::class, 'create']);
+    Route::post('store-airline', [AdminAirlineController::class, 'store']);
+    Route::get('edit-airline/{id}', [AdminAirlineController::class, 'edit']);
+    Route::put('update-airline/{id}', [AdminAirlineController::class, 'update']);
 
     // Airport Routes
-    Route::get('airport', [AirportController::class, 'index']);
-    Route::get('create-airport', [AirportController::class, 'create']);
-    Route::post('store-airport', [AirportController::class, 'store']);
-    Route::get('edit-airport/{id}', [AirportController::class, 'edit']);
-    Route::put('update-airport/{id}', [AirportController::class, 'update']);
+    Route::get('airport', [AdminAirportController::class, 'index']);
+    Route::get('create-airport', [AdminAirportController::class, 'create']);
+    Route::post('store-airport', [AdminAirportController::class, 'store']);
+    Route::get('edit-airport/{id}', [AdminAirportController::class, 'edit']);
+    Route::put('update-airport/{id}', [AdminAirportController::class, 'update']);
 });
 
 // Passenger Routes
 Route::group(['middleware' => ['auth', 'role:user'], 'prefix' => 'user'], function () {
     Route::get('dashboard', [UserController::class, 'index']);
     Route::resource('/booking', BookingController::class);
+    Route::post('/cancelflight', [BookingController::class, 'cancelFlight'])->name('cancel-flight');
 });
 
-// Passenger Routes
+// Ticket
 Route::group(['middleware' => ['auth', 'role:user']], function () {
     Route::get('tickets', [TicketsController::class, 'index'])->name('tickets.index');
     Route::get('tickets/{id}', [TicketsController::class, 'show'])->name('tickets.show');
+
+    Route::get('/passenger-details/{id}', [SearchController::class, 'passengerDetails'])->name('continue-passenger-details');
 });
 
 // Search
 Route::get('/flight-list', [UserController::class, 'flightList']);
 Route::get('/search/flight-list', [SearchController::class, 'searchResults'])->name('search-flight.results');
 Route::get('/passenger-details/{id}', [SearchController::class, 'passengerDetails'])->name('continue-passenger-details');
+Route::get('/feedback', [FeedbackController::class, 'index']);
+Route::post('/rate-flight', [FeedbackController::class, 'rateFlight'])->name('rate-flight');
+Route::get('/return-flight-list', [UserController::class, 'returnflightList'])->name('return-flight-list');
+Route::get('/return-search/flight-list', [SearchController::class, 'returnSearchResults'])->name('return-search-flight.results');
+

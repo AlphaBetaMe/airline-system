@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Booking;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class BookingController extends Controller
 {
@@ -29,40 +30,6 @@ class BookingController extends Controller
     public function store(Request $request)
     {
 
-        $formFields = $request->validate([
-            'user_id' => 'nullable',
-            'flight_type' => 'nullable',
-            'airline' => 'nullable',
-            'flight_no' => 'nullable',
-            'departure_date' => 'nullable',
-            'duration' => 'nullable',
-            'price' => 'nullable',
-            'adultPassengers' => 'nullable',
-            'childPassengers' => 'nullable',
-            'infantPassengers' => 'nullable',
-            'originAirportCode' => 'nullable',
-            'destinationAirportCode' => 'nullable',
-            'destinationAirportLocation' => 'nullable',
-            'originAirportName' => 'nullable',
-            'destinationAirportName' => 'nullable',
-            'originAirportLocation' => 'nullable',
-            'departureTime' => 'nullable',
-            'arrivalTime' => 'nullable',
-            'seat' => 'nullable',
-            'last_name' => 'nullable',
-            'first_name' => 'nullable',
-            'middle_initial' => 'nullable',
-            'contact_number' => 'nullable',
-            'address' => 'nullable',
-            'date_of_birth' => 'nullable',
-            'pwd' => 'nullable',
-            'special_asssitance' => 'nullable',
-            'adds_on_baggage' => 'nullable',
-            'seatClass' => 'nullable',
-            'gate' => 'nullable',
-            'cancel' => 'nullable',
-        ]);
-
         $last_name = $request->input('last_name');
         $first_name = $request->input('first_name');
         $middle_initial = $request->input('middle_initial');
@@ -76,23 +43,31 @@ class BookingController extends Controller
       $numberofPassengers = $request->input('adultPassengers') +  $request->input('childPassengers') + $request->input('infantPassengers');
 
 
-    for ($i = 1; $i <= $numberofPassengers; $i++) {
-        $specialAssistance[]  = $request->input("special_asssitance{$i}")[0];
+      for ($i = 1; $i <= $numberofPassengers; $i++) {
+        $specialAssistance[]  = $request->input("special_asssitance{$i}")[0] ?? null;
+        $adds_on_baggage[]  = $request->input("adds_on_baggage{$i}")[0] ?? null;
+
+        $ticket_id[] = $this->generateTicketID();
+
+
+        if (is_null($request->seat)) {
+            $seat[] = $this->generateRandomSeat();
+        } else {
+            $seat = $request->input('seat');
+        }
     }
 
-    if (is_null($request->seat)) {
-        $seat = $this->generateRandomSeat();
-    } else {
-        $seat = $request->seat;
-    }
-
-
-        Booking::create([
+        $totalSeats = DB::table('airlines')->where('airline', $request->input('airline'))->pluck('total_seats')->first();
+        $availableSeats = max(0, $totalSeats - $numberofPassengers);
+        DB::table('airlines')->where('airline', $request->input('airline'))->update(['total_seats' => $availableSeats]);
+    
+        $booking = Booking::create([
             'user_id' => auth()->user()->id,
             'flight_type' => $request->input('flight_type'),
             'airline' => $request->input('airline'),
             'flight_no' => $request->input('flight_no'),
             'departure_date' => $request->input('departure_date'),
+            'arrival_date' => $request->input('arrival_date'),
             'duration' => $request->input('duration'),
             'price' => $request->input('price'),
             'adultPassengers' => $request->input('adultPassengers'),
@@ -106,7 +81,7 @@ class BookingController extends Controller
             'originAirportLocation' => $request->input('originAirportLocation'),
             'departureTime' => $request->input('departureTime'),
             'arrivalTime' => $request->input('arrivalTime'),
-            'seat' => /* $this->generateRandomSeat(), */ $seat,
+            'seat' => /* $this->generateRandomSeat(), */implode('|',$seat),
             'last_name' => implode('|',$last_name),
             'first_name' => implode('|',$first_name),
             'middle_initial' => implode('|',$middle_initial),
@@ -115,14 +90,17 @@ class BookingController extends Controller
             'date_of_birth' => implode('|',$date_of_birth),
             'pwd' => !empty($pwd) ? implode('|', $pwd) : null,
             'special_asssitance' => implode('|',$specialAssistance),
-            'adds_on_baggage' => $request->input('adds_on_baggage'),
+            'adds_on_baggage' =>  implode('|',$adds_on_baggage),
             'seatClass' => $request->input('seatClass'),
             'gate' => $this->generateRandomGate(),
+            'ticket_id' =>  implode('|',$ticket_id),
             'cancel' => $request->input('cancel'),
         ]);
 
+            $bookingId = $booking->id;
+            $showUrl = route('tickets.show', ['id' => $bookingId]);
 
-        return redirect()->back();
+        return redirect($showUrl);
     }
 
 
@@ -140,9 +118,20 @@ class BookingController extends Controller
             return $randomSeat;
         }
 
-        /* Gate */
+    /* tikcet id */
+    function generateTicketID($length = 10) {
+        $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $ticketID = '';
+        $maxIndex = strlen($characters) - 1;
 
+        for ($i = 0; $i < $length; $i++) {
+            $ticketID .= $characters[mt_rand(0, $maxIndex)];
+        }
 
+        return $ticketID;
+    }
+
+    /* Gate */
     function generateRandomGate() {
         // Define characters for gates
         $characters = 'ABCDEFGHI';
@@ -160,7 +149,16 @@ class BookingController extends Controller
         return $randomGate;
     }
 
+    /* Cancel flight */
 
+    public function cancelFlight(Request $request)
+    {
+       Booking::where('id', $request->id)->update([
+            'status' => 2,
+        ]);
+
+        return redirect('tickets');
+    }
 
     /**
      * Display the specified resource.

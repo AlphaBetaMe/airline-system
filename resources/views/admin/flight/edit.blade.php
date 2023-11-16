@@ -63,18 +63,48 @@
                 </div>
             </div>
 
-            <div class="row mb-3">
-                <div class="col">
+            <div class="row">
+                <div class="col mb-3">
                     <div class="form-floating">
                         <input type="time" class="form-control" name="departure_time" value="{{ $flights->departure_time }}" required>
                         <label for="departure_time">Departure Time</label>
                     </div>
                 </div>
 
-                <div class="col">
+                <div class="col mb-3">
                     <div class="form-floating">
                         <input type="time" class="form-control" name="arrival_time" value="{{ $flights->arrival_time }}" required>
                         <label for="arrival_time">Arrival Time</label>
+                    </div>
+                </div>
+            </div>
+           
+            <div class="row" id="onewayContent">
+                <div class="col mb-3">
+                    <div class="form-floating">
+                        <input type="date" class="form-control" name="departure_date_return" value="{{ $flights->departure_date_return }}" required>
+                        <label for="departure_date_return">Departure Date (Return)</label>
+                    </div>
+                </div>
+
+                <div class="col mb-3">
+                    <div class="form-floating">
+                        <input type="date" class="form-control" name="arrival_date_return" value="{{ $flights->arrival_date_return }}" required>
+                        <label for="arrival_date_return">Arrival Date (Return)</label>
+                    </div>
+                </div>
+          
+                <div class="col  mb-3">
+                    <div class="form-floating">
+                        <input type="time" class="form-control" name="departure_time_return" value="{{ $flights->departure_time_return }}" required>
+                        <label for="departure_time_return">Departure Time (Return)</label>
+                    </div>
+                </div>
+
+                <div class="col mb-3">
+                    <div class="form-floating">
+                        <input type="time" class="form-control" name="arrival_time_return" value="{{ $flights->arrival_time_return }}" required>
+                        <label for="arrival_time_return">Arrival Time (Return)</label>
                     </div>
                 </div>
             </div>
