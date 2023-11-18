@@ -49,6 +49,7 @@ Route::group(['middleware' => ['auth', 'role:superadmin'], 'prefix' => 'superadm
     Route::post('store-flight', [SuperadminFlightController::class, 'store']);
     Route::get('edit-flight/{id}', [SuperadminFlightController::class, 'edit']);
     Route::put('update-flight/{id}', [SuperadminFlightController::class, 'update']);
+    Route::get('report', [SuperadminFlightController::class, 'report'])->name('report.index');;
 
     // Airline Routes
     Route::get('airline-lists', [SuperadminAirlineController::class, 'index']);

@@ -72,6 +72,7 @@ return [
 
     'timezone' => 'Asia/Manila',
 
+
     /*
     |--------------------------------------------------------------------------
     | Application Locale Configuration

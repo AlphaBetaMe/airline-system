@@ -77,7 +77,7 @@
           </div>
         </div>
       </li>
-   <li class="nav-item {{ Request::is('superadmin/', 'superadmin/create-users', 'superadmin/user-lists') ? 'active' : '' }}">
+   <li class="nav-item {{ Request::is('superadmin/', 'superadmin/user-lists') ? 'active' : '' }}">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUser" aria-expanded="true"
           aria-controls="collapseUser">
           <i class="fas fa-users"></i>
@@ -87,6 +87,19 @@
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Users</h6>
             <a class="collapse-item {{ Request::is('superadmin/user-lists') ? 'active' : '' }}" href="{{ url('superadmin/user-lists') }}">User Lists</a>
+          </div>
+        </div>
+      </li>
+      <li class="nav-item {{ Request::is('superadmin/', 'superadmin/report') ? 'active' : '' }}">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseReport" aria-expanded="true"
+          aria-controls="collapseReport">
+          <i class="fas fa-file-alt"></i>
+          <span>Reports</span>
+        </a>
+        <div id="collapseReport" class="collapse" aria-labelledby="headingReport" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Reports</h6>
+            <a class="collapse-item {{ Request::is('superadmin/report') ? 'active' : '' }}" href="{{ url('superadmin/report') }}">Report</a>
           </div>
         </div>
       </li>

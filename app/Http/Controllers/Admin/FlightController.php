@@ -56,7 +56,7 @@ class FlightController extends Controller
         $request->validate($rules);
 
         function generateUniqueFlightNumber() {
-            $prefix = "FR";
+            $prefix = "PR";
             $randomNumbers = str_pad(rand(0, 999), 3, '0', STR_PAD_LEFT);
             return $prefix . $randomNumbers;
         }
@@ -134,7 +134,7 @@ class FlightController extends Controller
     public function update(Request $request, $id)
     {
         function generateUniqueFlightNumber() {
-            $prefix = "FR";
+            $prefix = "PR";
             $randomNumbers = str_pad(rand(0, 999), 3, '0', STR_PAD_LEFT);
             return $prefix . $randomNumbers;
         }

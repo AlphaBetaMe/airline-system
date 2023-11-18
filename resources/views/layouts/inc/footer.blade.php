@@ -1,9 +1,9 @@
  <!-- Footer Start -->
  <div class=" pt-4 footer-user">
-    <div class="bg-secondary  p-4">
+    <div class="bg-primary text-white text-center p-3">
         <div class="row">
             <div class="text-center">
-                &copy; 2023<a href="#"> AFRS</a>. All Right Reserved
+                &copy; 2023 AFRS</a>. All Right Reserved
             </div>
         </div>
     </div>

@@ -140,7 +140,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-calendar"></i></span>
                                 </div>
-                                <input type="text" class="form-control" name="departure_date_return" placeholder="dd/mm/yyyy" required>
+                                <input type="text" class="form-control" name="departure_date_return" placeholder="dd/mm/yyyy">
                             </div>
                         </div>
                         <div class="form-group" id="arrivalDateReturn">
@@ -149,7 +149,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-calendar"></i></span>
                                 </div>
-                                <input type="text" class="form-control" name="arrival_date_return" placeholder="dd/mm/yyyy" required>
+                                <input type="text" class="form-control" name="arrival_date_return" placeholder="dd/mm/yyyy">
                             </div>
                         </div>
                     </div>
@@ -160,7 +160,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-clock"></i></span>
                                 </div>
-                                <input type="text" class="form-control" name="departure_time_return" placeholder="--:-- --" required>
+                                <input type="text" class="form-control" name="departure_time_return" placeholder="--:-- --">
                             </div>
                         </div>
                         <div class="form-group">
@@ -169,7 +169,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-clock"></i></span>
                                 </div>
-                                <input type="text" class="form-control" name="arrival_time_return" placeholder="--:-- --" required>
+                                <input type="text" class="form-control" name="arrival_time_return" placeholder="--:-- --">
                             </div>
                         </div>
                     </div>

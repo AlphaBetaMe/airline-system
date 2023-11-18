@@ -117,7 +117,7 @@
         </div>
         @endfor
 
-        <div class="mt-4 d-flex justify-content-end">
+        <div class="mt-4 mb-5 d-flex justify-content-end">
             <button type="button" onclick="prevStep(1)" class="btn btn-lg btn-danger m-2">Back</button>
             <button type="button" class="btn btn-lg m-2 btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
                 Proceed

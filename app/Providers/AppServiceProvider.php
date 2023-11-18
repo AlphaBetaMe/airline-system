@@ -23,8 +23,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $notificationController = app(NotificationController::class);
         $userNotification = $notificationController->getUserNotifications();
-    
+
         View::share('userNotification', $userNotification);
-    
     }
 }

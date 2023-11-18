@@ -29,6 +29,7 @@ class Flight extends Model
         'return_flight_number',
     ];
 
+
     public function airline()
     {
         return $this->belongsTo(Airline::class, 'airline_id', 'id');

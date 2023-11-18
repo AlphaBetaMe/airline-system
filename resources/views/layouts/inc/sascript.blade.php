@@ -152,3 +152,43 @@
         });
       });
 </script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+      var flightTypeSelect = document.getElementById('flight_type');
+      var departureDateGroup = document.getElementById('departureDateGroup');
+      var returnDateGroup = document.getElementById('returnDateGroup');
+      var returnDateInput = document.getElementById('departure_date_return');
+
+      flightTypeSelect.addEventListener('change', function () {
+          if (this.value === 'round_trip') {
+              departureDateGroup.style.display = 'block';
+              returnDateGroup.style.display = 'block';
+              returnDateInput.disabled = false; // Enable the return date input
+          } else if (this.value === 'one_way') {
+              departureDateGroup.style.display = 'block';
+              returnDateGroup.style.display = 'none';
+              returnDateInput.disabled = true; // Disable the return date input
+          } else {
+              departureDateGroup.style.display = 'none';
+              returnDateGroup.style.display = 'none';
+              returnDateInput.disabled = false; // Enable the return date input in case it was disabled before
+          }
+      });
+
+      // Initial check for the default value
+      if (flightTypeSelect.value === 'round_trip') {
+          departureDateGroup.style.display = 'block';
+          returnDateGroup.style.display = 'block';
+          returnDateInput.disabled = false; // Enable the return date input
+      } else if (flightTypeSelect.value === 'one_way') {
+          departureDateGroup.style.display = 'block';
+          returnDateGroup.style.display = 'none';
+          returnDateInput.disabled = true; // Disable the return date input
+      } else {
+          departureDateGroup.style.display = 'none';
+          returnDateGroup.style.display = 'none';
+          returnDateInput.disabled = false; // Enable the return date input in case it was disabled before
+      }
+  });
+</script>

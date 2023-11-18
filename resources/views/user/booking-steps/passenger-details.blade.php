@@ -49,8 +49,22 @@
             <div class="card-body">
 
                 <div>
-                    <h2 class="text-center text-decoration-underline mb-4">
-                        Passenger Details</h2>
+                    <style>
+                        .styled-h2 {
+                            color: #0050FF;
+                            font-weight: bold;
+                            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Adjust the shadow values as needed */
+                            -webkit-text-stroke: 1px white; /* Webkit browsers (Chrome, Safari) */
+                            text-stroke: 1px white; /* Standard CSS */
+                        }
+                    </style>
+                    
+                    <h2 class="text-center mb-2 mt-2 styled-h2">
+                        Passenger Details
+                    </h2>
+                    <div class="text-center" style="width: 60%; margin: 0 auto;">
+                        <hr style="border-color: #59595B;">
+                    </div>
                     @if ( $i <= $adult) <h4>Adult </h4>
                         @elseif ($i <=$adult + $child && $child> 0)
                             <h4>Child </h4>
@@ -98,7 +112,7 @@
                 <div class="row mb-3 border-bottom  pb-2">
                     <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
                         <input type="checkbox" name="pwd[]" id="pwd{{ $i }}">
-                        <label class="ms-2" for="pwd{{ $i }}">I am a Person with disability (PWD)</label for="pwd">
+                        <label class="ms-2" for="pwd{{ $i }}">I am a <a href="" style="text-decoration: none;">Person with disability</a> (PWD)</label for="pwd">
                     </div>
                 </div>
                 <div class="row mb-3 ">
@@ -121,7 +135,7 @@
     </div>
 
     @endfor
-    <div class="mt-4 d-flex justify-content-center align-items-center" style="max-width: 800px; margin: 0 auto;">
+    <div class="mt-4 d-flex justify-content-center align-items-center" style="max-width: 800px; margin: 80 auto;">
         <button type="button" onclick="nextStep(2)" class="btn  btn-primary w-100">Proceed</button>
     </div>
     </div>

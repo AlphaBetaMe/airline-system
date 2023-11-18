@@ -253,7 +253,7 @@ $total_seat_price = array_sum($seat_prices);
 
 @endfor
 
-<div class="rounded-1 p-2 card">
+<div class="rounded-1 p-2 card" style="margin-bottom: 70px; margin-top: 18px;">
     <h4>
         @php
         $baggage_array = explode('|', $ticket->adds_on_baggage);
