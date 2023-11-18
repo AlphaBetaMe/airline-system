@@ -49,7 +49,7 @@ Route::group(['middleware' => ['auth', 'role:superadmin'], 'prefix' => 'superadm
     Route::post('store-flight', [SuperadminFlightController::class, 'store']);
     Route::get('edit-flight/{id}', [SuperadminFlightController::class, 'edit']);
     Route::put('update-flight/{id}', [SuperadminFlightController::class, 'update']);
-    Route::get('report', [SuperadminFlightController::class, 'report'])->name('report.index');;
+    Route::get('report', [SuperadminFlightController::class, 'report'])->name('report.index');
 
     // Airline Routes
     Route::get('airline-lists', [SuperadminAirlineController::class, 'index']);
@@ -70,7 +70,7 @@ Route::group(['middleware' => ['auth', 'role:superadmin'], 'prefix' => 'superadm
     Route::get('view-details/{id}', [SuperadminPassengerController::class, 'show']);
     Route::put('update-tickets/{id}', [SuperadminPassengerController::class, 'updateTicket']);
     Route::get('passenger-history', [SuperadminPassengerController::class, 'history']);
-    
+
 
 });
 
@@ -81,8 +81,8 @@ Route::group(['middleware' => ['auth', 'role:admin'], 'prefix' => 'admin'], func
     Route::get('dashboard', [AdminController::class, 'index']);
     Route::post('delay-flight/{id}', [AdminController::class, 'delayFlight']);
     Route::post('move-back/{id}', [AdminController::class, 'moveFlight']);
-    
-    
+
+
     // Flight Routes
     Route::get('flight', [AdminFlightController::class, 'index']);
     Route::get('create-flight', [AdminFlightController::class, 'create']);
@@ -113,7 +113,7 @@ Route::group(['middleware' => ['auth', 'role:admin'], 'prefix' => 'admin'], func
 
 // Passenger Routes
 Route::group(['middleware' => ['auth', 'role:user'], 'prefix' => 'user'], function () {
-    Route::get('dashboard', [UserController::class, 'index']);
+    Route::get('dashboard', [UserController::class, 'index'])->name('user.dashboard');
     Route::resource('/booking', BookingController::class);
     Route::post('/cancelflight', [BookingController::class, 'cancelFlight'])->name('cancel-flight');
 });

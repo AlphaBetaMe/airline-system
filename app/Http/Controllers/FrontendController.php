@@ -18,6 +18,9 @@ class FrontendController extends Controller
             if(auth()->user()->role == 'superadmin') {
                 abort(403, "You can't access this page");
             }
+            if(auth()->user()->role == 'user') {
+                return redirect()->route('user.dashboard');
+            }
         }
         return view('frontend.index', compact('date', 'flights', 'airports'));
     }

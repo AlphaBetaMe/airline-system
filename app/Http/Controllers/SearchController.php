@@ -16,7 +16,8 @@ class SearchController extends Controller
         $queryDestination = $request->input('destination_id');
         $queryDeparture = $request->input('departure_date');
         $queryDepartureReturn = $request->input('departure_date_return');
-        $queryArrival = $request->input('arrival_date_return');
+        $queryArrivalReturn = $request->input('arrival_date_return');
+        $queryArrival = $request->input('arrival_date');
         $queryAdultPassenger = $request->input('adultPassengers');
         $querySeatClass = $request->input('seatClassRoundtrip');
         $queryFlightType = $request->input('flight_type');
@@ -49,14 +50,15 @@ class SearchController extends Controller
             dd('destination airport not found');
         }
 
-        /* generate the flight id here */
-
-        //* get the flights that match the query */
         $results = Flight::where('origin_id', 'like', '%' . $queryOrigin . '%')
-                ->where('destination_id', 'like', '%' . $queryDestination . '%')
-                ->where('departure_date', 'like', '%' . $queryDeparture . '%')
-                ->where('departure_date_return', 'like', '%' . $queryArrival . '%')
-                ->get();
+        ->where('destination_id', 'like', '%' . $queryDestination . '%')
+        ->where('flight_type', 'like', '%' . $queryFlightType . '%')
+        ->where('departure_date', 'like', '%' . $queryDeparture . '%')
+        ->when($queryFlightType === 'round_trip', function ($query) use ($queryDepartureReturn) {
+            return $query->where('departure_date_return', 'like', '%' . $queryDepartureReturn . '%');
+        })
+        ->get();
+
 
 
         /* get the number of adult, child and infants in query */
@@ -80,8 +82,10 @@ class SearchController extends Controller
     {
         $queryOrigin = $request->input('origin_id');
         $queryDestination = $request->input('destination_id');
-        $queryDeparture = $request->input('departure_date_return');
-        $queryArrival = $request->input('arrival_date_return');
+        $queryDeparture = $request->input('departure_date');
+        $queryDepartureReturn = $request->input('departure_date_return');
+        $queryArrivalReturn = $request->input('arrival_date_return');
+        $queryArrival = $request->input('arrival_date');
         $queryAdultPassenger = $request->input('adultPassengers');
         $querySeatClass = $request->input('seatClassRoundtrip');
         $queryFlightType = $request->input('flight_type');
@@ -117,22 +121,14 @@ class SearchController extends Controller
 
         /* generate the flight id here */
 
-        //* get the flights that match the query */
-     /*    $results = Flight::where('origin_id', 'like', '%' . $queryOrigin . '%')
-        ->where('destination_id', 'like', '%' . $queryDestination . '%')
-        ->where('departure_date_return', 'like', '%' . $queryDeparture . '%')
-        ->where('arrival_date_return', 'like', '%' . $queryArrival . '%')
-        ->get();
-        dd($results);
- */
         $results = Flight::where('origin_id', 'like', '%' . $queryOrigin . '%')
                 ->where('destination_id', 'like', '%' . $queryDestination . '%')
-                ->where('departure_date_return', 'like', '%' . $queryDeparture . '%')
-                ->where('arrival_date_return', 'like', '%' . $queryArrival . '%')
+                ->where('flight_type', 'like', '%' . $queryFlightType . '%')
+                ->where('departure_date_return', 'like', '%' . $queryDepartureReturn . '%')
+                ->when($queryFlightType === 'round_trip', function ($query) use ($queryDepartureReturn) {
+                    return $query->where('departure_date_return', 'like', '%' . $queryDepartureReturn . '%');
+                })
                 ->get();
-
-
-
 
         /* get the number of adult, child and infants in query */
          $adult = $request->adultPassengers;

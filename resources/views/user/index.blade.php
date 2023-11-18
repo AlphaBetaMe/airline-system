@@ -58,9 +58,9 @@
 
                     <div class="row">
                         <div class="col-md-4 mb-3" id="onewayContent">
-                            <label for="arrival_date" class="mb-2">Return Date</label>
-                            <input min="{{ $date }}" type="date" class="form-control" name="arrival_date"
-                                placeholder=" ">
+                            <label for="departure_date_return" class="mb-2">Return Date</label>
+                            <input min="{{ $date }}" type="date" class="form-control" id="departure_date_return"
+                                name="departure_date_return" placeholder=" ">
                         </div>
                         <div class="col-md-4 mb-3">
                             <label for="seatClassRoundtrip" class="mb-2">Seat Class</label>
@@ -137,12 +137,15 @@
 </div>
 </div>
 <script>
+    console.log("hello world")
     document.addEventListener('DOMContentLoaded', function () {
         // Add event listener to radio buttons
         const roundtripOption = document.getElementById('roundtripOption');
         const roundtripContent = document.getElementById('roundtripContent');
         const onewayOption = document.getElementById('onewayOption');
         const onewayContent = document.getElementById('onewayContent');
+        const departureDateReturn = document.getElementById('departure_date_return');
+
 
 
         if(onewayOption.checked === true) {
@@ -157,6 +160,8 @@
 
         onewayOption.addEventListener('change', () => {
             onewayContent.style.display = 'none';
+            departureDateReturn.value = '';
+
         });
 
         /* adults */

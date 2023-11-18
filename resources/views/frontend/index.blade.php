@@ -10,7 +10,7 @@
 
     <div class="card" style="max-width: 800px; margin: 0 auto;">
         <div class="card-body">
-            <form action="{{ route('search-flight.results') }}" method="GET">
+            <form id="search-form" action="{{ route('search-flight.results') }}" method="GET">
                 <div class="d-flex justify-content-center mb-3">
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="flight_type" id="roundtripOption"
@@ -58,9 +58,9 @@
 
                     <div class="row">
                         <div class="col-md-4 mb-3" id="onewayContent">
-                            <label for="arrival_date" class="mb-2">Return Date</label>
-                            <input min="{{ $date }}" type="date" class="form-control" name="arrival_date"
-                                placeholder=" ">
+                            <label for="departure_date_return" class="mb-2">Return Date</label>
+                            <input min="{{ $date }}" type="date" class="form-control" id="departure_date_return"
+                                name="departure_date_return" placeholder=" ">
                         </div>
                         <div class="col-md-4 mb-3">
                             <label for="seatClassRoundtrip" class="mb-2">Seat Class</label>
@@ -137,12 +137,15 @@
 </div>
 </div>
 <script>
+    console.log("hello world")
     document.addEventListener('DOMContentLoaded', function () {
         // Add event listener to radio buttons
         const roundtripOption = document.getElementById('roundtripOption');
         const roundtripContent = document.getElementById('roundtripContent');
         const onewayOption = document.getElementById('onewayOption');
         const onewayContent = document.getElementById('onewayContent');
+        const departureDateReturn = document.getElementById('departure_date_return');
+
 
 
         if(onewayOption.checked === true) {
@@ -157,6 +160,8 @@
 
         onewayOption.addEventListener('change', () => {
             onewayContent.style.display = 'none';
+            departureDateReturn.value = '';
+
         });
 
         /* adults */
@@ -183,7 +188,7 @@
             }
             childrenBtnIncrement.addEventListener("click", childrenhandleIncrement);
             childrenBtnDecrement.addEventListener("click", childrenhandleDecrement);
-        /* infants */
+        /* infanrts */
         const infantBtnIncrement = document.querySelector('#incrementInfants');
             const infantBtnDecrement = document.querySelector('#decrementInfants');
              let countInfant = document.getElementById('infantPassengers');
@@ -198,11 +203,13 @@
 
             const originSelect = document.getElementById('origin_id');
             const destinationSelect = document.querySelector('[name="destination_id"]');
-            const form = document.querySelector('form');
+            const form = document.querySelector('#search-form');
+            console.log(form)
 
             // Initialize the options
             const options = Array.from(destinationSelect.options);
 
+            // Add event listener to origin select
             originSelect.addEventListener('change', function () {
                 const selectedOrigin = this.value;
 
@@ -214,16 +221,18 @@
                 });
             });
 
-            form.addEventListener('submit', function (event) {
-                const selectedOrigin = originSelect.value;
-                const selectedDestination = destinationSelect.value;
+        // Add event listener to form submission
+        form.addEventListener('submit', function (event) {
+            const selectedOrigin = originSelect.value;
+            const selectedDestination = destinationSelect.value;
 
-                if (selectedOrigin === selectedDestination) {
-                    event.preventDefault(); // Prevent form submission
-                    alert('Departure and Arrival must be different.')
-                }
-            });
+            if (selectedOrigin === selectedDestination) {
+                event.preventDefault(); // Prevent form submission
+                alert('Departure and Arrival must be different.')
+            }
         });
+    });
+
 </script>
 
 @endsection

@@ -43,8 +43,10 @@
                         <tr>
                             <th>Airline</th>
                             <th>Flight No</th>
-                            <th>Departure</th>
-                            <th>Arrival</th>
+                            <th>Departure Date</th>
+                            <th>Departure Time</th>
+                            <th>Arrival Date</th>
+                            <th>Arrival Time</th>
                             <th>Duration</th>
                             <th>Price</th>
                             <th>Action</th>
@@ -58,7 +60,6 @@
                             <input name="flight_type" id="flight_type" type="hidden" value="{{ $queryFlightType }}">
                             <input name="airline" type="hidden" value="{{ $result->airline->airline }}">
                             <input name="id" type="hidden" value="{{ $result->id }}">
-                            <input name="departure_date" type="hidden" value="{{ $result->departure_date }}">
                             <input name="departure_date" type="hidden" value="{{ $result->departure_date }}">
                             <input name="arrival_date" type="hidden" value="{{ $result->arrival_date }}">
                             <input name="duration" type="hidden" value="{{ $result->duration }}">
@@ -76,16 +77,13 @@
                                 <td> {{ substr($result->flight_number, 0, 2) }} {{ substr($result->flight_number, 2) }}
                                 </td>
                                 <td>{{ $result->departure_date }}</td>
+                                <td>{{ $result->departure_time }}</td>
                                 <td>{{ $result->arrival_date }}</td>
+                                <td>{{ $result->arrival_time }}</td>
                                 <td>{{ $result->duration }}</td>
                                 <td>₱{{ $result->price }}</td>
                                 <td>
                                     <button type=" submit" class="btn btn-primary">Continue</button>
-                                    {{-- @auth
-                                    <button type=" submit" class="btn btn-primary">Continue</button>
-                                    @else
-                                    <a href="/login" class="btn btn-sm btn-primary">Continue</a>
-                                    @endauth --}}
                                 </td>
                             </tr>
 
