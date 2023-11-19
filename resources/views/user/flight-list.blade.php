@@ -48,8 +48,10 @@
                             <th>Flight No</th>
                             <th>Departure Date</th>
                             <th>Departure Time</th>
+                            @if ($queryFlightType === "round_trip")
                             <th>Arrival Date</th>
                             <th>Arrival Time</th>
+                            @endif
                             <th>Duration</th>
                             <th>Price</th>
                             <th>Action</th>
@@ -83,8 +85,10 @@
                                 </td>
                                 <td>{{ $result->departure_date }}</td>
                                 <td>{{ $result->departure_time }}</td>
+                                @if ($queryFlightType === "round_trip")
                                 <td>{{ $result->arrival_date }}</td>
                                 <td>{{ $result->arrival_time }}</td>
+                                @endif
                                 <td>{{ $result->duration }}</td>
                                 <td>₱{{ $result->price }}</td>
                                 <td>
@@ -96,7 +100,7 @@
                                         class="flight-checkbox" data-target="{{ $result->id }}" name="selected_flight"
                                         value="{{ $result->id }}"> --}}
                                     @else
-                                    <button type=" submit" class="btn btn-primary">Continue</button>
+                                    <button type=" submit" class="btn btn-primary">Book</button>
 
                                     @endif
                                 </td>
