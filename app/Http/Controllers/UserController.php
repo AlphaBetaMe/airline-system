@@ -22,8 +22,8 @@ class UserController extends Controller
         return view('user.flight-list');
     }
 
-    public function returnflightList()
+/*     public function returnflightList()
     {
         return view('user.return-flight-list');
-    }
+    } */
 }

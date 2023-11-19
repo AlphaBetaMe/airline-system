@@ -45,6 +45,7 @@
     <input x-model="arrivalTime" name="arrivalTime" id="arrivalTime" type="hidden">
 
     <div class="container step" id="step1">
+
         @for ($i = 1; $i <= $numberofPassengers; $i++) <div class="card" style="max-width: 800px; margin: 1rem auto;">
             <div class="card-body">
 
@@ -53,12 +54,15 @@
                         .styled-h2 {
                             color: #0050FF;
                             font-weight: bold;
-                            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Adjust the shadow values as needed */
-                            -webkit-text-stroke: 1px white; /* Webkit browsers (Chrome, Safari) */
-                            text-stroke: 1px white; /* Standard CSS */
+                            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+                            /* Adjust the shadow values as needed */
+                            -webkit-text-stroke: 1px white;
+                            /* Webkit browsers (Chrome, Safari) */
+                            text-stroke: 1px white;
+                            /* Standard CSS */
                         }
                     </style>
-                    
+
                     <h2 class="text-center mb-2 mt-2 styled-h2">
                         Passenger Details
                     </h2>
@@ -76,24 +80,28 @@
                     <div class="row mb-3">
                         <div class="col-md-4 mb-3">
                             <label for="last_name{{ $i }}" class="mb-2">Last Name</label>
-                            <input type="text" x-model="inputs[{{ $i - 1 }}].lastName" id="last_name{{ $i }}" class="form-control"
-                                name="last_name[]" required placeholder="Enter Last Name" pattern="[A-Za-z]+" title="Only letters are allowed" p>
+                            <input type="text" x-model="inputs[{{ $i - 1 }}].lastName" id="last_name{{ $i }}"
+                                class="form-control" name="last_name[]" required placeholder="Enter Last Name"
+                                pattern="[A-Za-z]+" title="Only letters are allowed" p>
                         </div>
                         <div class="col-md-4 mb-3">
                             <label for="first_name{{ $i }}" class="mb-2">First Name</label>
-                            <input type="text" x-model="inputs[{{ $i - 1 }}].firstName" id="first_name{{ $i }}" class="form-control"
-                                name="first_name[]" required placeholder="Enter First Name" pattern="[A-Za-z]+" title="Only letters are allowed">
+                            <input type="text" x-model="inputs[{{ $i - 1 }}].firstName" id="first_name{{ $i }}"
+                                class="form-control" name="first_name[]" required placeholder="Enter First Name"
+                                pattern="[A-Za-z]+" title="Only letters are allowed">
                         </div>
                         <div class="col-md-4 mb-3">
                             <label for="middle_initial{{ $i }}" class="mb-2">Middle Initial</label>
                             <input type="text" x-model="inputs[{{ $i - 1 }}].middleInitial" id="middle_initial{{ $i }}"
-                                class="form-control" name="middle_initial[]" required placeholder="Enter Middle Initial">
+                                class="form-control" name="middle_initial[]" required
+                                placeholder="Enter Middle Initial">
                         </div>
                         <div class="col-md-4 mb-3">
                             <label for="contact_number{{ $i }}" class="mb-2">Contact Number</label>
-                            <input type="text" x-model="inputs[{{ $i - 1 }}].contactNumber" id="contact_number{{ $i }}" class="form-control"
-                            name="contact_number[]" required placeholder="+63 123 456 7890" 
-                            pattern="\+?\d{1,3} ?\d{1,4} ?\d{1,4} ?\d{1,4}" title="Invalid format. Use +63 XXX YYY ZZZZ or XXX YYY ZZZZ">
+                            <input type="text" x-model="inputs[{{ $i - 1 }}].contactNumber" id="contact_number{{ $i }}"
+                                class="form-control" name="contact_number[]" required placeholder="+63 123 456 7890"
+                                pattern="\+?\d{1,3} ?\d{1,4} ?\d{1,4} ?\d{1,4}"
+                                title="Invalid format. Use +63 XXX YYY ZZZZ or XXX YYY ZZZZ">
                         </div>
 
                         <div class="col-md-4 mb-3">
@@ -112,7 +120,8 @@
                 <div class="row mb-3 border-bottom  pb-2">
                     <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
                         <input type="checkbox" name="pwd[]" id="pwd{{ $i }}">
-                        <label class="ms-2" for="pwd{{ $i }}">I am a <a href="" style="text-decoration: none;">Person with disability</a> (PWD)</label for="pwd">
+                        <label class="ms-2" for="pwd{{ $i }}">I am a <a href="" style="text-decoration: none;">Person
+                                with disability</a> (PWD)</label for="pwd">
                     </div>
                 </div>
                 <div class="row mb-3 ">
@@ -133,7 +142,6 @@
                 </div>
             </div>
     </div>
-
     @endfor
     <div class="mt-4 d-flex justify-content-center align-items-center" style="max-width: 800px; margin: 80 auto;">
         <button type="button" onclick="nextStep(2)" class="btn  btn-primary w-100">Proceed</button>

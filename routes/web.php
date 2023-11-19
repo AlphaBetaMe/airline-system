@@ -132,6 +132,6 @@ Route::get('/search/flight-list', [SearchController::class, 'searchResults'])->n
 Route::get('/passenger-details/{id}', [SearchController::class, 'passengerDetails'])->name('continue-passenger-details');
 Route::get('/feedback', [FeedbackController::class, 'index']);
 Route::post('/rate-flight', [FeedbackController::class, 'rateFlight'])->name('rate-flight');
-Route::get('/return-flight-list', [UserController::class, 'returnflightList'])->name('return-flight-list');
-Route::get('/return-search/flight-list', [SearchController::class, 'returnSearchResults'])->name('return-search-flight.results');
+/* Route::get('/return-flight-list', [UserController::class, 'returnflightList'])->name('return-flight-list');
+Route::get('/return-search/flight-list', [SearchController::class, 'returnSearchResults'])->name('return-search-flight.results'); */
 

@@ -69,85 +69,15 @@ class SearchController extends Controller
 
         // Redirect to a results page and pass the search results
         return view('user.flight-list', compact('results', 'querySeatClass', 'adult', 'child', 'infant',
-            'originAirportCode',
-            'queryDeparture',
-'queryArrival',
-            'originAirportLocation', 'destinationAirportCode', 'destinationAirportLocation',
-            'queryFlightType'
-        ));
-    }
-
-
-    public function returnSearchResults(Request $request)
-    {
-        $queryOrigin = $request->input('origin_id');
-        $queryDestination = $request->input('destination_id');
-        $queryDeparture = $request->input('departure_date');
-        $queryDepartureReturn = $request->input('departure_date_return');
-        $queryArrivalReturn = $request->input('arrival_date_return');
-        $queryArrival = $request->input('arrival_date');
-        $queryAdultPassenger = $request->input('adultPassengers');
-        $querySeatClass = $request->input('seatClassRoundtrip');
-        $queryFlightType = $request->input('flight_type');
-
-        $originAirport = DB::table('airports')
-                            ->select('code', 'airport', 'location')
-                            ->where('id', $queryOrigin)
-                            ->first();
-        // destination
-        $destinationAirport = DB::table('airports')
-                            ->select('code', 'airport', 'location')
-                            ->where('id', $queryDestination)
-                            ->first();
-
-
-        if ($originAirport) {
-            $originAirportCode = $originAirport->code;
-            $originAirportName = $originAirport->airport;
-            $originAirportLocation = $originAirport->location;
-        } else {
-            // Handle case where airport with given ID is not found
-            dd('origin airport not found');
-        }
-
-        if ($destinationAirport) {
-            $destinationAirportCode = $destinationAirport->code;
-            $destinationAirportName = $destinationAirport->airport;
-            $destinationAirportLocation = $destinationAirport->location;
-        } else {
-            // Handle case where airport with given ID is not found
-            dd('destination airport not found');
-        }
-
-        /* generate the flight id here */
-
-        $results = Flight::where('origin_id', 'like', '%' . $queryOrigin . '%')
-                ->where('destination_id', 'like', '%' . $queryDestination . '%')
-                ->where('flight_type', 'like', '%' . $queryFlightType . '%')
-                ->where('departure_date_return', 'like', '%' . $queryDepartureReturn . '%')
-                ->when($queryFlightType === 'round_trip', function ($query) use ($queryDepartureReturn) {
-                    return $query->where('departure_date_return', 'like', '%' . $queryDepartureReturn . '%');
-                })
-                ->get();
-
-        /* get the number of adult, child and infants in query */
-         $adult = $request->adultPassengers;
-         $child = $request->childPassengers;
-         $infant = $request->infantPassengers;
-
-
-        // Redirect to a results page and pass the search results
-        return view('user.return-flight-list', compact('results', 'querySeatClass', 'adult', 'child', 'infant',
-            'originAirportCode',
-            'queryDeparture',
-'queryArrival',
-'queryFlightType',
-            'originAirportLocation', 'destinationAirportCode', 'destinationAirportLocation'
+            'originAirportCode', 'queryDeparture', 'queryArrival',  'originAirportLocation', 'destinationAirportCode',
+             'destinationAirportLocation','queryFlightType'
         ));
     }
 
     public function passengerDetails(Request $request, $id)
     {
+
+
         $queryFlightType = $request->input('flight_type');
         $queryOrigin = $request->input('origin_id');
         $queryDestination = $request->input('destination_id');
@@ -155,20 +85,31 @@ class SearchController extends Controller
         $queryArrival = $request->input('arrival_date');
         $querySeatClass = $request->input('seatClass');
 
+
+        if($queryFlightType === "one_way") {
+            $selected_departure = Flight::where('id', $request->selected_flight)->get();
+        } else {
+            $selected_departure = Flight::where('id', $request->selected_departure)->get();
+            $selected_return = Flight::where('id', $request->selected_return)->get();
+        }
+
         // retrieving the airport data
         $flight = Flight::find($id);
+
+       $origin =  $selected_departure->pluck('origin_id')->firstOrFail();
+       $destination =  $selected_departure->pluck('destination_id')->firstOrFail();
 
 
         if ($flight) {
             // origin
             $originAirport = DB::table('airports')
                             ->select('code', 'airport', 'location')
-                            ->where('id', $queryOrigin)
+                            ->where('id', $origin)
                             ->first();
             // destination
             $destinationAirport = DB::table('airports')
                             ->select('code', 'airport', 'location')
-                            ->where('id', $queryDestination)
+                            ->where('id', $destination)
                             ->first();
 
             // departure time
@@ -223,10 +164,12 @@ class SearchController extends Controller
          $acquiredSeats = Booking::where('originAirportCode', $originAirportCode)->where('destinationAirportCode', $destinationAirportCode)->pluck('seat')->toArray();
 
             return view('user.booking-steps.passenger-details', compact(
+                'originAirport', 'destinationAirport',
                 'flight', 'queryFlightType',
                 'originAirportName',  'originAirportLocation', 'destinationAirportName', 'originAirportName',
                 'destinationAirportName', 'acquiredSeats',
                 'destinationAirportLocation', 'seats', 'querySeatClass',
+                'selected_departure', 'selected_return',
                 'result', 'departureTime', 'arrivalTime', 'adult', 'child', 'infant', 'originAirportCode', 'destinationAirportCode'));
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             // User not found

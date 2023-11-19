@@ -54,17 +54,22 @@
                             Departure
                         </span>
                     </div>
+                    @foreach ($selected_departure as $selected_dep)
                     <div>
-                        Flight No.: <span x-text="flight_number"></span>
+                        Flight No.: {{ $selected_dep->flight_number }}
+                        {{-- {{ $originAirport }} --}}
                     </div>
                     <div class="container">
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="d-flex align-items-center justify-content-between p-3">
                                     <div>
-                                        <h5 x-text="originAirportCode">
+                                        <h5>
+                                            {{ $originAirport->code }}
                                         </h5>
-                                        <p x-text="originAirportLocation"></p>
+                                        <p>
+                                            {{ $originAirport->location }}
+                                        </p>
                                     </div>
                                     <div>
                                         <svg fill="#0000ff" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
@@ -89,9 +94,12 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <h5 x-text="destinationAirportCode">
+                                        <h5>
+                                            {{ $destinationAirport->code }}
                                         </h5>
-                                        <p x-text="destinationAirportLocation"></p>
+                                        <p>
+                                            {{ $destinationAirport->location }}
+                                        </p>
                                     </div>
 
                                 </div>
@@ -123,6 +131,8 @@
                             @endif
                         </div>
                     </div>
+                    @endforeach
+
                 </div>
                 @if ($queryFlightType === "round_trip")
                 <div>
