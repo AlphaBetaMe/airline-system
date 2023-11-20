@@ -1,41 +1,42 @@
 body {
-    background-image: url('/assets/img/Hundred Islands.jpg');
+    background-image: url("/assets/img/Hundred Islands.jpg");
     background-repeat: no-repeat;
-    background-size: 100% 100%; /* Fixed size, covers the entire container */
+    background-size: cover; /* Ensure the background covers the entire container */
     margin: 0;
     padding: 0;
-    height: 100vh; /* Ensure body takes up the full viewport height */
+    height: 100%;
 }
+
 .navbar {
-    background-color: #0050FF;
+    background-color: #0050ff;
 }
 
 .navbar-brand {
     margin-right: 50px;
     margin-left: 30px;
-    font-family: 'Lato', sans-serif;
+    font-family: "Lato", sans-serif;
     font-weight: bolder;
     text-shadow: 2px 2px 4px rgba(121, 109, 109, 0.5);
 }
 
 .brand-letter {
-    font-size:larger;
+    font-size: larger;
 }
 
-.brand-letter-a { 
-    color: #FAFF00;
+.brand-letter-a {
+    color: #faff00;
 }
 
 .brand-letter-f {
-    color: #FFFFFF;
+    color: #ffffff;
 }
 
 .brand-letter-r {
-    color: #FAFF00;
+    color: #faff00;
 }
 
-.brand-letter-s {  
-    color: #FFFFFF;
+.brand-letter-s {
+    color: #ffffff;
 }
 
 .navbar .navbar-nav .nav-link {
@@ -46,19 +47,19 @@ body {
 
 .custom-button {
     border-radius: 10px;
-    background-color: #00A3FF;
+    background-color: #00a3ff;
 }
 
 h1 {
     margin-top: 50px;
     font-size: 50px;
-    font-family: 'Playfair Display', serif;
-    color: #E2FF2E;
+    font-family: "Playfair Display", serif;
+    color: #e2ff2e;
     text-shadow: 2px 2px 4px rgba(121, 109, 109, 0.5);
 }
 
 .intro {
-    color: #FFFFFF;
+    color: #ffffff;
     text-shadow: 2px 2px 4px rgba(121, 109, 109, 0.5);
 }
 
@@ -81,7 +82,6 @@ h1 {
     text-align: justify;
 }
 
-
 .card {
     border-radius: 30px;
 }
@@ -91,19 +91,17 @@ h1 {
     margin-left: 20px;
 }
 
-
-
-
 footer {
-    background-color: #0050FF;
+    background-color: #0050ff;
     text-align: center;
     margin-top: 265px;
     padding: 4px;
 }
 
-.copyright, .policy {
-  margin-top: 10px;
-  color: #FFFFFF !important;
+.copyright,
+.policy {
+    margin-top: 10px;
+    color: #ffffff !important;
 }
 
 #roundtripContent {
@@ -114,7 +112,7 @@ footer {
 input[type="number"].small-input::-webkit-inner-spin-button,
 input[type="number"].small-input::-webkit-outer-spin-button {
     -webkit-appearance: none;
-    margin: 0; 
+    margin: 0;
 }
 
 /* Disable editing and clicking on the input fields */
