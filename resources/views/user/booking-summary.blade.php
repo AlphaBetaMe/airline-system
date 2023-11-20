@@ -131,6 +131,16 @@
                             @endif
                         </div>
                     </div>
+
+                    <div class="row my-3">
+                        <div class="col-md-4">
+                        </div>
+                        <div class="col-md-4">
+                        </div>
+                        <div class="col-md-4">
+                            <h3> PHP {{ $selected_dep->price }}.00</h3>
+                        </div>
+                    </div>
                     @endforeach
 
                 </div>
@@ -218,20 +228,46 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="row my-3">
+                        <div class="col-md-4">
+                        </div>
+                        <div class="col-md-4">
+                        </div>
+                        <div class="col-md-4">
+                            @foreach ($selected_return as $item)
+                            <h3> PHP {{ $item->price }}.00</h3>
+                            @endforeach
+                        </div>
+                    </div>
                 </div>
                 @endif
 
-                <div class="form-check mt-5">
-                    <input class="form-check-input" type="checkbox" id="confirmationCheckbox">
-                    <label class="form-check-label" for="confirmationCheckbox">
-                        <span class="fw-bold"> I confirm that I have reviewed my reservation summary</span>, and I
-                        acknowledge that the price and
-                        flight details are correct. I have read and accept the cancellation policy, check-in guidelines,
-                        fare rules, and terms and conditions. I acknowledge that it is my responsibility to comply with
-                        all the regulations and requirements specified by the airline. By clicking 'Submit,' I affirm
-                        that I have read and understood the terms of my reservation. I am aware of the necessary
-                        check-in procedures and any associated fees.
-                    </label>
+                <div class="row mt-5">
+                    <div class="form-check  col-md-8">
+                        <input class="form-check-input" type="checkbox" id="confirmationCheckbox">
+                        <label class="form-check-label" for="confirmationCheckbox">
+                            <span class="fw-bold"> I confirm that I have reviewed my reservation summary</span>, and I
+                            acknowledge that the price and
+                            flight details are correct. I have read and accept the cancellation policy, check-in
+                            guidelines,
+                            fare rules, and terms and conditions. I acknowledge that it is my responsibility to comply
+                            with
+                            all the regulations and requirements specified by the airline. By clicking 'Submit,' I
+                            affirm
+                            that I have read and understood the terms of my reservation. I am aware of the necessary
+                            check-in procedures and any associated fees.
+                        </label>
+                    </div>
+                    <div style="background:rgb(211, 211, 22); "
+                        class="col md-4 d-flex flex-column  align-items-center justify-content-center">
+                        <p>Grand Total</p>
+                        @php
+                        $total = $item->price + $selected_dep->price
+                        @endphp
+                        <h3> PHP {{ $total }}.00</h3>
+                        <p class="font-bold"> PHP</p>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -245,6 +281,11 @@
 
 <script src="//unpkg.com/alpinejs" defer></script>
 
+@php
+// Assuming $numberofPassengers is defined in your Blade template
+$baggageTotalValue = 0;
+@endphp
+
 <script>
     // Get the checkbox and the button
     const confirmationCheckbox = document.getElementById('confirmationCheckbox');
@@ -256,4 +297,29 @@
         // Toggle the 'disabled' attribute of the button based on checkbox state
         confirmButton.disabled = !confirmationCheckbox.checked;
     });
+
+    var selectedValues = [];
+
+// Function to update selected value when a radio button is clicked
+function updateSelectedValue(element) {
+    var index = element.name.replace('adds_on_baggage', '').replace('[]', '');
+    console.log(index)
+    selectedValues[index] = element.value;
+    var totalValue = 0;
+    // console.log(selectedValues[2]); // You can use or manipulate selectedValues array as needed
+    selectedValues.map((val, i) => {
+        var elementId = 'baggagep_' + (i); // Adding 1 to the index to start from 1
+     /*    console.log(elementId)
+        console.log(document.getElementById(elementId)) */
+        document.getElementById(elementId).textContent = val
+        if (element) {
+        // element.textContent = val;
+            // Accumulate values
+            totalValue += parseInt(val, 10);
+    }
+})
+document.getElementById('totalBaggageValue').textContent = 'Total Baggage Value: ' + totalValue;
+
+
+}
 </script>
