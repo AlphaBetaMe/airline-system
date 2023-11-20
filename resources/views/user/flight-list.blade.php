@@ -46,12 +46,8 @@
                         <tr>
                             <th>Airline</th>
                             <th>Flight No</th>
-                            <th>Departure Date</th>
                             <th>Departure Time</th>
-                            @if ($queryFlightType === "round_trip")
-                            <th>Arrival Date</th>
                             <th>Arrival Time</th>
-                            @endif
                             <th>Duration</th>
                             <th>Price</th>
                             <th>Action</th>
@@ -83,12 +79,8 @@
                                 <td> {{ substr($result->flight_number, 0, 2) }} {{ substr($result->flight_number, 2)
                                     }}
                                 </td>
-                                <td>{{ $result->departure_date }}</td>
                                 <td>{{ $result->departure_time }}</td>
-                                @if ($queryFlightType === "round_trip")
-                                <td>{{ $result->arrival_date }}</td>
                                 <td>{{ $result->arrival_time }}</td>
-                                @endif
                                 <td>{{ $result->duration }}</td>
                                 <td>₱{{ $result->price }}</td>
                                 <td>
@@ -132,9 +124,7 @@
                     <tr>
                         <th>Airline</th>
                         <th>Flight No</th>
-                        <th>Departure Date</th>
                         <th>Departure Time</th>
-                        <th>Arrival Date</th>
                         <th>Arrival Time</th>
                         <th>Duration</th>
                         <th>Price</th>
@@ -165,9 +155,7 @@
                             <td> {{ substr($result->return_flight_number, 0, 2) }} {{
                                 substr($result->return_flight_number, 2) }}
                             </td>
-                            <td>{{ $result->departure_date_return }}</td>
                             <td>{{ $result->departure_time_return }}</td>
-                            <td>{{ $result->arrival_date_return }}</td>
                             <td>{{ $result->arrival_time_return }}</td>
                             <td>{{ $result->duration }}</td>
                             <td>₱{{ $result->price }}</td>
