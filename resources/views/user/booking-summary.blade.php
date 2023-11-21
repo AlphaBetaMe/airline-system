@@ -243,6 +243,9 @@
                 </div>
                 @endif
 
+                <h6>Adds on</h6>
+                <p>Baggage: <span id="baggageTotal"></span></p>
+
                 <div class="row mt-5">
                     <div class="form-check  col-md-8">
                         <input class="form-check-input" type="checkbox" id="confirmationCheckbox">
@@ -262,11 +265,11 @@
                     <div style="background:rgb(211, 211, 22); "
                         class="col md-4 d-flex flex-column  align-items-center justify-content-center">
                         <p>Grand Total</p>
-                        @php
+                        {{-- @php
                         $total = $item->price + $selected_dep->price
-                        @endphp
-                        <h3> PHP {{ $total }}.00</h3>
-                        <p class="font-bold"> PHP</p>
+                        @endphp --}}
+                        {{-- <h3> PHP {{ $total }}.00</h3> --}}
+                        <h3 class="font-bold"> PHP <span id="grandtotal"></span>.00</h3>
                     </div>
                 </div>
             </div>
@@ -283,10 +286,71 @@
 
 @php
 // Assuming $numberofPassengers is defined in your Blade template
-$baggageTotalValue = 0;
+$initialTotalAmount = 0;
 @endphp
 
 <script>
+    // Wait for the DOM content to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Select the radio button with id="0kg{{ $i }}" and set it as checked
+            const defaultRadioButton = document.getElementById('0kg{{ $i }}');
+            if (defaultRadioButton) {
+                defaultRadioButton.checked = true;
+            }
+        });
+
+    // Get all radio buttons with class 'baggage-option'
+    if (typeof totalAmount === 'undefined') {
+        // Initialize a global variable to store the total amount
+        var totalAmount = 0;
+    }
+    const radioButtons_{{ $i }} = document.querySelectorAll('.baggage-option');
+    // Function to handle radio button change event
+    function handleRadioButtonChange(event) {
+    const selectedValue = parseFloat(event.target.value); // Convert the value to a number
+
+    // Get the parent baggage card
+    const baggageCard = event.target.closest('.baggage_card');
+
+    // Get the total amount element for the specific card
+    const totalAmountElement = baggageCard.querySelector('#amount');
+
+    // Get the current total amount for the specific card
+    const currentTotalAmount = parseFloat(totalAmountElement.textContent);
+
+    // Subtract the previous selected value from the total amount
+    totalAmount -= currentTotalAmount;
+
+    // Update the amount for the specific card
+    totalAmountElement.textContent = selectedValue.toFixed(2); // Display the value with two decimal places
+
+    const totalP = {{ $item->price + $selected_dep->price }}
+
+
+    // Add the new selected value to the total amount
+    totalAmount += selectedValue;
+
+    const gtotal = totalP + totalAmount
+
+    document.getElementById("grandtotal").textContent = gtotal; // Display the value with two decimal places
+    document.getElementById("baggageTotal").textContent = totalAmount;
+
+    // console.log(totalAmount);
+}
+
+const fback = {{ $item->price + $selected_dep->price }}
+const fbackB= 0
+document.getElementById("grandtotal").textContent = fback;
+document.getElementById("baggageTotal").textContent = fbackB;
+    // Attach change event listener to each radio button
+    radioButtons_{{ $i }}.forEach(radioButton => {
+        radioButton.addEventListener('change', handleRadioButtonChange);
+    });
+
+
+
+
+
     // Get the checkbox and the button
     const confirmationCheckbox = document.getElementById('confirmationCheckbox');
     const confirmButton = document.getElementById('confirmButton');
@@ -298,28 +362,6 @@ $baggageTotalValue = 0;
         confirmButton.disabled = !confirmationCheckbox.checked;
     });
 
-    var selectedValues = [];
-
-// Function to update selected value when a radio button is clicked
-function updateSelectedValue(element) {
-    var index = element.name.replace('adds_on_baggage', '').replace('[]', '');
-    console.log(index)
-    selectedValues[index] = element.value;
-    var totalValue = 0;
-    // console.log(selectedValues[2]); // You can use or manipulate selectedValues array as needed
-    selectedValues.map((val, i) => {
-        var elementId = 'baggagep_' + (i); // Adding 1 to the index to start from 1
-     /*    console.log(elementId)
-        console.log(document.getElementById(elementId)) */
-        document.getElementById(elementId).textContent = val
-        if (element) {
-        // element.textContent = val;
-            // Accumulate values
-            totalValue += parseInt(val, 10);
-    }
-})
-document.getElementById('totalBaggageValue').textContent = 'Total Baggage Value: ' + totalValue;
 
 
-}
 </script>
