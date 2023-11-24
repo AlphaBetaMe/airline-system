@@ -60,7 +60,7 @@ class BookingController extends Controller
         $totalSeats = DB::table('airlines')->where('airline', $request->input('airline'))->pluck('total_seats')->first();
         $availableSeats = max(0, $totalSeats - $numberofPassengers);
         DB::table('airlines')->where('airline', $request->input('airline'))->update(['total_seats' => $availableSeats]);
-    
+
         $booking = Booking::create([
             'user_id' => auth()->user()->id,
             'flight_type' => $request->input('flight_type'),
@@ -107,7 +107,7 @@ class BookingController extends Controller
     /* Seat */
     public function generateRandomSeat()
         {
-            $rows = ['A', 'B', 'C', 'D'];
+            $rows = ['C', 'D'];
             $columns = ['1', '2', '3', '4', '5'];
 
             $randomRow = array_rand($rows);
