@@ -22,9 +22,10 @@
                 </div>
             </div>
         </div>
-          <!-- Rate Experience Button -->
-          <div class="text-end mb-3">
-            <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#rateModal">Rate Experience</button>
+        <!-- Rate Experience Button -->
+        <div class="text-end mb-3">
+            <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#rateModal">Rate
+                Experience</button>
         </div>
     </div>
 
@@ -134,13 +135,13 @@
                                 <h5>{{ $ticket->arrivalTime }}</h5>
                             </div>
                         </div>
-                            <div class="row mb-3">
-                                <div class="col-md-3">
-                                    <p class="m-0 text-muted">Ticket ID</p>
-                                    <h5>{{ $ticket_id[$i - 1] ?? null }} </h5>
-                                </div>
+                        {{-- <div class="row mb-3">
+                            <div class="col-md-3">
+                                <p class="m-0 text-muted">Ticket ID</p>
+                                <h5>{{ $ticket_id[$i - 1] ?? null }} </h5>
                             </div>
-                        </div>
+                        </div> --}}
+                    </div>
                     <div class="col-md-4 dashed-border">
                         <div class="row mb-3">
                             <div class="col-md-6">
@@ -217,14 +218,14 @@
                                 </h6>
                             </div>
                         </div>
-                        <div class="row mb-3">
+                        {{-- <div class="row mb-3">
                             <div class="col-md-12">
                                 <p class="m-0 text-muted">Ticket ID</p>
                                 <h6 class="fw-bold">
                                     {{ $ticket_id[$i - 1] ?? null }}
                                 </h6>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -264,45 +265,45 @@ $total_seat_price = array_sum($seat_prices);
     </h4>
 </div>
 </div>
-   
 
-    <!-- Modal -->
-    <div class="modal fade" id="rateModal" tabindex="-1" aria-labelledby="rateModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="rateModalLabel">Rate Your Experience</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form action="{{ route('rate-flight') }}" method="POST">
-                        @csrf
-                        <div class="mb-3">
-                            <label for="rating" class="form-label">Rating</label>
-                            <div class="star-rating">
-                                <input type="radio" id="star5" name="rating" value="5" />
-                                <label for="star5" title="5 stars"></label>
-                                <input type="radio" id="star4" name="rating" value="4" />
-                                <label for="star4" title="4 stars"></label>
-                                <input type="radio" id="star3" name="rating" value="3" />
-                                <label for="star3" title="3 stars"></label>
-                                <input type="radio" id="star2" name="rating" value="2" />
-                                <label for="star2" title="2 stars"></label>
-                                <input type="radio" id="star1" name="rating" value="1" />
-                                <label for="star1" title="1 star"></label>
-                            </div>
+
+<!-- Modal -->
+<div class="modal fade" id="rateModal" tabindex="-1" aria-labelledby="rateModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="rateModalLabel">Rate Your Experience</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('rate-flight') }}" method="POST">
+                    @csrf
+                    <div class="mb-3">
+                        <label for="rating" class="form-label">Rating</label>
+                        <div class="star-rating">
+                            <input type="radio" id="star5" name="rating" value="5" />
+                            <label for="star5" title="5 stars"></label>
+                            <input type="radio" id="star4" name="rating" value="4" />
+                            <label for="star4" title="4 stars"></label>
+                            <input type="radio" id="star3" name="rating" value="3" />
+                            <label for="star3" title="3 stars"></label>
+                            <input type="radio" id="star2" name="rating" value="2" />
+                            <label for="star2" title="2 stars"></label>
+                            <input type="radio" id="star1" name="rating" value="1" />
+                            <label for="star1" title="1 star"></label>
                         </div>
-                        <div class="mb-3">
-                            <label for="comment" class="form-label">Comment</label>
-                            <textarea class="form-control" id="comment" name="comment" rows="3"></textarea>
-                        </div>
-                        <input type="hidden" name="ticket_id" value="{{ $ticket->id }}">
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </form>
-                </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="comment" class="form-label">Comment</label>
+                        <textarea class="form-control" id="comment" name="comment" rows="3"></textarea>
+                    </div>
+                    <input type="hidden" name="ticket_id" value="{{ $ticket->id }}">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
             </div>
         </div>
     </div>
+</div>
 
 @endsection
 
@@ -329,10 +330,12 @@ $total_seat_price = array_sum($seat_prices);
     }
 
     .star-rating label:before {
-        content: '\2605'; /* Unicode character for a star */
+        content: '\2605';
+        /* Unicode character for a star */
     }
 
     .star-rating input[type="radio"]:checked~label:before {
-        color: #ffcc00; /* Color for the selected stars */
+        color: #ffcc00;
+        /* Color for the selected stars */
     }
 </style>
