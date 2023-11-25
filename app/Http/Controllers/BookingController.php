@@ -57,6 +57,8 @@ class BookingController extends Controller
         }
     }
 
+    dd($request->price);
+
         $totalSeats = DB::table('airlines')->where('airline', $request->input('airline'))->pluck('total_seats')->first();
         $availableSeats = max(0, $totalSeats - $numberofPassengers);
         DB::table('airlines')->where('airline', $request->input('airline'))->update(['total_seats' => $availableSeats]);

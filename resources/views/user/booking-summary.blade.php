@@ -245,6 +245,7 @@
 
                 <h6>Adds on</h6>
                 <p>Baggage: <span id="baggageTotal"></span></p>
+                <p>Seat Selection: <span id="totalValueElement"></span></p>
 
                 <div class="row mt-5">
                     <div class="form-check  col-md-8">
@@ -283,7 +284,6 @@
 </div>
 
 <script src="//unpkg.com/alpinejs" defer></script>
-
 @php
 // Assuming $numberofPassengers is defined in your Blade template
 $initialTotalAmount = 0;
@@ -291,13 +291,13 @@ $initialTotalAmount = 0;
 
 <script>
     // Wait for the DOM content to be fully loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            // Select the radio button with id="0kg{{ $i }}" and set it as checked
-            const defaultRadioButton = document.getElementById('0kg{{ $i }}');
-            if (defaultRadioButton) {
-                defaultRadioButton.checked = true;
-            }
-        });
+    document.addEventListener('DOMContentLoaded', function () {
+        // Select the radio button with id="0kg{{ $i }}" and set it as checked
+        const defaultRadioButton = document.getElementById('0kg{{ $i }}');
+        if (defaultRadioButton) {
+            defaultRadioButton.checked = true;
+        }
+    });
 
     // Get all radio buttons with class 'baggage-option'
     if (typeof totalAmount === 'undefined') {
@@ -305,63 +305,152 @@ $initialTotalAmount = 0;
         var totalAmount = 0;
     }
     const radioButtons_{{ $i }} = document.querySelectorAll('.baggage-option');
+
+    // Initialize an array to store selected seats
+    var selectedSeats = [];
+
+    // Variable to store the total value of selected seats
+    var selectedSeatsValue = 0;
+
     // Function to handle radio button change event
     function handleRadioButtonChange(event) {
-    const selectedValue = parseFloat(event.target.value); // Convert the value to a number
+        const selectedValue = parseFloat(event.target.value); // Convert the value to a number
 
-    // Get the parent baggage card
-    const baggageCard = event.target.closest('.baggage_card');
+        // Get the parent baggage card
+        const baggageCard = event.target.closest('.baggage_card');
 
-    // Get the total amount element for the specific card
-    const totalAmountElement = baggageCard.querySelector('#amount');
+        // Get the total amount element for the specific card
+        const totalAmountElement = baggageCard.querySelector('#amount');
 
-    // Get the current total amount for the specific card
-    const currentTotalAmount = parseFloat(totalAmountElement.textContent);
+        // Get the current total amount for the specific card
+        const currentTotalAmount = parseFloat(totalAmountElement.textContent);
 
-    // Subtract the previous selected value from the total amount
-    totalAmount -= currentTotalAmount;
+        // Subtract the previous selected value from the total amount
+        totalAmount -= currentTotalAmount;
 
-    // Update the amount for the specific card
-    totalAmountElement.textContent = selectedValue.toFixed(2); // Display the value with two decimal places
+        // Update the amount for the specific card
+        totalAmountElement.textContent = selectedValue.toFixed(2); // Display the value with two decimal places
 
-    const totalP = {{ $item->price + $selected_dep->price }}
+        const totalP = {{ $item->price + $selected_dep->price }};
+        console.log(totalP);
 
+        // Add the new selected value to the total amount
+        totalAmount += selectedValue;
 
-    // Add the new selected value to the total amount
-    totalAmount += selectedValue;
+        // Update the grand total
+        updateGrandTotal();
+    }
 
-    const gtotal = totalP + totalAmount
-
-    document.getElementById("grandtotal").textContent = gtotal; // Display the value with two decimal places
-    document.getElementById("baggageTotal").textContent = totalAmount;
-
-    // console.log(totalAmount);
-}
-
-const fback = {{ $item->price + $selected_dep->price }}
-const fbackB= 0
-document.getElementById("grandtotal").textContent = fback;
-document.getElementById("baggageTotal").textContent = fbackB;
     // Attach change event listener to each radio button
     radioButtons_{{ $i }}.forEach(radioButton => {
         radioButton.addEventListener('change', handleRadioButtonChange);
     });
 
+    // Get all the checkboxes
+    var checkboxes = document.querySelectorAll('input[name="seat[]"]');
+
+    checkboxes.forEach(function (checkbox) {
+        // Add an event listener to each checkbox
+        checkbox.addEventListener('change', function () {
+            // Check if the checkbox is checked
+            if (this.checked) {
+                // Determine the value based on the seat index
+                var seatValue = getSeatValue(this.value);
+
+                // Add the seat value to the selectedSeats array
+                selectedSeats.push({ seat: this.value, value: seatValue });
+
+                // Update the total value of selected seats
+                selectedSeatsValue = calculateTotalValue(selectedSeats);
+
+                // Update the grand total
+                updateGrandTotal();
+
+                // Log the current selected seats and total value after each change event
+                logSelectedSeatsAndTotal(selectedSeats, selectedSeatsValue);
+            } else {
+                // Remove the seat value from the selectedSeats array
+                var index = selectedSeats.findIndex(function (seat) {
+                    return seat.seat === this.value;
+                }.bind(this));
+
+                if (index !== -1) {
+                    selectedSeats.splice(index, 1);
+                }
+
+                // Update the total value of selected seats
+                selectedSeatsValue = calculateTotalValue(selectedSeats);
+
+                // Update the grand total
+                updateGrandTotal();
+
+                // Log the current selected seats and total value after each change event
+                logSelectedSeatsAndTotal(selectedSeats, selectedSeatsValue);
+            }
+        });
+    });
+
+    // Function to determine the value based on the seat index
+    function getSeatValue(seat) {
+        var row = seat.charAt(0);
+        var column = parseInt(seat.substring(1));
+
+        if ((row === 'A' && column >= 1 && column <= 5)) {
+            return 390;
+        } else if(row === 'B' && column >= 1 && column <= 6) {
+            return 245;
+        }  else if (row === 'C' && column >= 1 && column <= 5 ||
+            row === 'D' && column >= 1 && column <= 5) {
+            return 200;
+        } else {
+            return 0; // Default value if seat does not match any criteria
+        }
+    }
+
+    // Function to calculate the total value of selected seats
+    function calculateTotalValue(seats) {
+        return seats.reduce(function (total, seat) {
+            return total + seat.value;
+        }, 0);
+    }
+
+    // Function to display the total value on the screen
+    function displayTotalValue(value) {
+        // Update the content of the totalValueElement with the calculated total value
+        // totalValueElement.textContent = 'Total Value: ' + value;
+    }
+
+    // Function to log the current selected seats and total value
+    function logSelectedSeatsAndTotal(seats, total) {
+        console.log('Selected Seats:', seats);
+        console.log('Total Value:', total);
+        totalValueElement.textContent = total;
+    }
+
+    // Function to update the grand total
+    function updateGrandTotal() {
+        const totalP = {{ $item->price + $selected_dep->price }};
+        const gtotal = totalAmount + selectedSeatsValue + totalP;
 
 
+        document.getElementById("grandtotal").textContent = gtotal.toFixed(2); // Display the value with two decimal places
+        document.getElementById("baggageTotal").textContent = totalAmount.toFixed(2);
+    }
 
+    const fback = {{ $item->price + $selected_dep->price }}
+        const fbackB= 0
+        document.getElementById("grandtotal").textContent = fback;
+        document.getElementById("baggageTotal").textContent = fbackB;
 
     // Get the checkbox and the button
     const confirmationCheckbox = document.getElementById('confirmationCheckbox');
     const confirmButton = document.getElementById('confirmButton');
 
     confirmButton.disabled = !confirmationCheckbox.checked;
+
     // Add an event listener to the checkbox
-    confirmationCheckbox.addEventListener('change', function() {
+    confirmationCheckbox.addEventListener('change', function () {
         // Toggle the 'disabled' attribute of the button based on checkbox state
         confirmButton.disabled = !confirmationCheckbox.checked;
     });
-
-
-
 </script>

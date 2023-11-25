@@ -55,7 +55,7 @@
                         @forelse ($results as $result)
 
                         <form action="{{ route('continue-passenger-details', $result->id) }}" method="GET">
-                            <input name="origin_id" type="hidden" value="{{ $result->origin_id }}">
+                            <input name="origin_id" type="text" value="{{ $result->origin_id }}">
                             <input name="destination_id" type="hidden" value="{{ $result->destination_id }}">
                             <input name="flight_type" id="flight_type" type="hidden" value="{{ $queryFlightType }}">
                             <input name="airline" type="hidden" value="{{ $result->airline->airline }}">
@@ -134,7 +134,7 @@
 
                     <form id="search-form" action="{{ route('continue-passenger-details', $result->id) }}" method="GET">
                         <input name="origin_id" type="hidden" value="{{ $result->origin_id }}">
-                        <input name="destination_id" type="hidden" value="{{ $result->destination_id }}">
+                        <input name="destination_id" type="text" value="{{ $result->destination_id }}">
                         <input name="flight_type" id="flight_type" type="hidden" value="{{ $queryFlightType }}">
                         <input name="airline" type="hidden" value="{{ $result->airline->airline }}">
                         <input name="id" type="hidden" value="{{ $result->id }}">

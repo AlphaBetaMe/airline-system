@@ -76,8 +76,6 @@ class SearchController extends Controller
 
     public function passengerDetails(Request $request, $id)
     {
-
-
         $queryFlightType = $request->input('flight_type');
         $queryOrigin = $request->input('origin_id');
         $queryDestination = $request->input('destination_id');
@@ -159,6 +157,7 @@ class SearchController extends Controller
             'D1', 'D2', 'D3', 'D4', 'D5',
             // ... other seats
         ];
+        dd($result);
 
 
          $acquiredSeats = Booking::where('originAirportCode', $originAirportCode)->where('destinationAirportCode', $destinationAirportCode)->pluck('seat')->toArray();

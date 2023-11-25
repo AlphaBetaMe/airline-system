@@ -12,7 +12,8 @@
         </div>
         <div class="col-md-12">
 
-            @for ($i = 1; $i <= $numberofPassengers; $i++) <div class="px-3  mt-4 py-3" style="background-color: #0050FF; border-radius: 20px;">
+            @for ($i = 1; $i <= $numberofPassengers; $i++) <div class="px-3  mt-4 py-3"
+                style="background-color: #0050FF; border-radius: 20px;">
                 <div class="card  rounded-2">
                     @if ( $i <= $adult) <h4 class="p-2">Adult </h4>
                         @elseif ($i <=$adult + $child && $child> 0)
@@ -155,13 +156,13 @@
                 const targetDiv = document.getElementById(targetDivId);
 
                 if (targetCheckbox.checked) {
-                    console.log('checked');
+                    // console.log('checked');
                     bButton.textContent = 'ADDED ✓';
                     if (targetDiv) {
                         targetDiv.style.display = 'block';
                     }
                 } else {
-                    console.log('unchecked');
+                    // console.log('unchecked');
                     bButton.textContent = 'ADD';
                     if (targetDiv) {
                         targetDiv.style.display = 'none';
@@ -189,13 +190,13 @@
                 const targetDiv = document.getElementById(targetDivId);
 
                 if (targetCheckbox.checked) {
-                    console.log('checked');
+                    // console.log('checked');
                     sButton.textContent = 'ADDED ✓';
                     if (targetDiv) {
                         targetDiv.style.display = 'block';
                     }
                 } else {
-                    console.log('unchecked');
+                    // console.log('unchecked');
                     sButton.textContent = 'ADD';
                     if (targetDiv) {
                         targetDiv.style.display = 'none';

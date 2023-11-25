@@ -27,7 +27,7 @@
     <input x-model="departure_date" name="departure_date" id="departure_date" type="hidden">
     <input x-model="arrival_date" name="arrival_date" id="arrival_date" type="hidden">
     <input name="duration" id="duration" type="hidden" value="{{ $result->duration }}">
-    <input name="price" id="price" type="hidden" value="{{ $result->price }}">
+    <input name="price" id="price" type="text" value="{{ $result->price }}">
     <input name="adultPassengers" id="adultPassengers" type="hidden" value="{{ $adult }}">
     <input name="childPassengers" id="childPassengers" type="hidden" value="{{ $child }}">
     <input name="infantPassengers" id="infantPassengers" type="hidden" value="{{ $infant }}">
