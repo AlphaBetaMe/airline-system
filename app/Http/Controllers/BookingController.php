@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ReceiptMail;
 use App\Models\Booking;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class BookingController extends Controller
 {
@@ -88,9 +91,9 @@ class BookingController extends Controller
             'address' => implode('|',$address),
             'date_of_birth' => implode('|',$date_of_birth),
             'pwd' => !empty($pwd) ? implode('|', $pwd) : null,
-            'special_asssitance' => implode('|',$specialAssistance),
-            'special_assistance_type' => implode('|',$special_assistance_type),
-            'adds_on_baggage' =>  implode('|',$adds_on_baggage),
+            'special_asssitance' =>  implode('|',$specialAssistance),
+            'special_assistance_type' => !empty($special_assistance_type) ? implode('|', $special_assistance_type) : null,
+            'adds_on_baggage' =>   implode('|',$adds_on_baggage),
             'seatClass' => $request->input('seatClass'),
             'gate' => $this->generateRandomGate(),
             'ticket_id' =>  implode('|',$ticket_id),
@@ -100,6 +103,41 @@ class BookingController extends Controller
 
             $bookingId = $booking->id;
             $showUrl = route('tickets.show', ['id' => $bookingId]);
+
+                $numberofPassengers = $request->adultPassengers + $request->childPassengers + $request->infantPassengers;
+
+            $data = [
+                'email' => auth()->user()->email,
+                'name' => $request->name,
+                'booking_date' =>Carbon::now()->toFormattedDateString(),
+                'booking_id' => $request->booking_id,
+                'origin_code' => $request->originAirportCode,
+                'destination_code' => $request->destinationAirportCode,
+                'departure_date' => $request->departure_date,
+                'departureTime' => $request->departureTime,
+                'originAirportLocation' => $request->originAirportLocation,
+                'destinationAirportLocation' => $request->destinationAirportLocation,
+                'destinationAirportName' => $request->destinationAirportName,
+                'originAirportName' => $request->originAirportName,
+                'departure_date_return' => $request->departure_date_return,
+                'departureTimeReturn' => $request->departureTimeReturn,
+                'arrivalTimeReturn' => $request->arrivalTimeReturn,
+                'arrival_date_return' => $request->arrival_date_return,
+                'arrivalTime' => $request->arrivalTime,
+                'arrival_date' => $request->arrival_date,
+                'numberofPassengers' =>$numberofPassengers,
+                'firstNames' =>$request->first_name,
+                'lastNames' =>$request->last_name,
+                'flightType' =>$request->flight_type,
+            ];
+
+
+            // Or log it using Laravel's Log facade
+// Log::info($emailContent);
+
+            // Mail::to($data['email'])->send(new ApproveScheduleEmail($data));
+
+                Mail::to($data['email'])->send(new ReceiptMail($data));
 
         return redirect($showUrl);
     }

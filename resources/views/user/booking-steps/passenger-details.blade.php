@@ -9,13 +9,17 @@
     }),
     'flight_number': '{{ $result->flight_number }}',
     'departure_date':  '{{ \Carbon\Carbon::parse($result->departure_date)->format('M d Y, D.') }}',
+    'departure_date_return':  '{{ \Carbon\Carbon::parse($result->departure_date_return)->format('M d Y, D.') }}',
     'arrival_date':  '{{ \Carbon\Carbon::parse($result->arrival_date)->format('M d Y, D.') }}',
+    'arrival_date_return':  '{{ \Carbon\Carbon::parse($result->arrival_date_return)->format('M d Y, D.') }}',
     'originAirportCode': '{{  $originAirportCode}}',
     'destinationAirportCode': '{{  $destinationAirportCode}}',
     'destinationAirportLocation': '{{  $destinationAirportLocation}}',
     'originAirportLocation': '{{  $originAirportLocation}}',
     'departureTime': '{{ is_string($departureTime) ? \Carbon\Carbon::parse($departureTime)->format('h:i A') : '' }}',
+    'departureTimeReturn': '{{ is_string($result->departure_time_return) ? \Carbon\Carbon::parse($result->departure_time_return)->format('h:i A') : '' }}',
     'arrivalTime': '{{ is_string($arrivalTime) ? \Carbon\Carbon::parse($arrivalTime)->format('h:i A') : '' }}',
+    'arrivalTimeReturn': '{{ is_string($result->arrival_time_return) ? \Carbon\Carbon::parse($result->arrival_time_return)->format('h:i A') : '' }}',
     'destinationAirportName': '{{  $destinationAirportName}}',
     'originAirportName': '{{  $originAirportName}}',
 }">
@@ -25,7 +29,9 @@
     <input name="airline" id="airline" type="hidden" value="{{ $result->airline->airline }}">
     <input x-model="flight_number" name="flight_no" id="flight_no" type="hidden">
     <input x-model="departure_date" name="departure_date" id="departure_date" type="hidden">
+    <input x-model="departure_date_return" name="departure_date_return" id="departure_date_return" type="hidden">
     <input x-model="arrival_date" name="arrival_date" id="arrival_date" type="hidden">
+    <input x-model="arrival_date_return" name="arrival_date_return" id="arrival_date_return" type="hidden">
     <input name="duration" id="duration" type="hidden" value="{{ $result->duration }}">
     <input name="price" id="price" type="hidden" value="{{ $result->price }}">
     <input name="adultPassengers" id="adultPassengers" type="hidden" value="{{ $adult }}">
@@ -39,10 +45,12 @@
         type="hidden">
     <input x-model="originAirportName" name="originAirportName" id="originAirportName" type="hidden">
     <input x-model="destinationAirportName" name="destinationAirportName" id="destinationAirportName" type="hidden">
+    <input x-model="departureTimeReturn" name="departureTimeReturn" id="departureTimeReturn" type="hidden">
 
     <input x-model="originAirportLocation" name="originAirportLocation" id="originAirportLocation" type="hidden">
     <input x-model="departureTime" name="departureTime" id="departureTime" type="hidden">
     <input x-model="arrivalTime" name="arrivalTime" id="arrivalTime" type="hidden">
+    <input x-model="arrivalTimeReturn" name="arrivalTimeReturn" id="arrivalTimeReturn" type="hidden">
 
     <div class="container step" id="step1">
 
