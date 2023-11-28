@@ -237,11 +237,11 @@
 </div>
 
 
-@if (in_array($seat[$i - 1], ["A1", "A2", "A3", "A4", "A5"]))
+@if (in_array($seat[$i - 1], ["A1", "A2", "A3", "A4", "A5", "A6"]))
 @php
 $seat_prices[] = 390;
 @endphp
-@elseif (in_array($seat[$i - 1], ["B1", "B2", "B3", "B4", "B5"]))
+@elseif (in_array($seat[$i - 1], ["B1", "B2", "B3", "B4", "B5", "B6"]))
 @php
 $seat_prices[] = 245;
 @endphp

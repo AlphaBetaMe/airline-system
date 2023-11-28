@@ -38,7 +38,7 @@ class FlightController extends Controller
 
     public function store(Request $request)
     {
-     
+
         $rules = [
             'flight_type' => 'required',
             'origin_id' => 'required',
@@ -56,7 +56,7 @@ class FlightController extends Controller
             'flight_number' => 'nullable',
             'return_flight_number' => 'nullable',
         ];
-    
+
         // Apply the validation rules to the request data
         $request->validate($rules);
 
@@ -91,7 +91,7 @@ class FlightController extends Controller
         if ($arrivalDateTime->diffInMinutes($departureDateTime) < 60) {
             return redirect()->back()->with('error', 'There should be at least a 1-hour interval between Departure and Arrival.');
         }
-        
+
         function generateUniqueFlightNumber() {
             $prefix = "PR";
             $randomNumbers = str_pad(rand(0, 999), 3, '0', STR_PAD_LEFT);
@@ -134,8 +134,8 @@ class FlightController extends Controller
         $flight->duration = $formattedDuration;
         $flight->return_flight_number = $flightNumberReturn;
         $flight->price = $request->input('price');
-        $flight->airline_id = $request->input('airline_id');        
-      
+        $flight->airline_id = $request->input('airline_id');
+
         // Calculate the duration as a DateInterval
         $departureDateTime = Carbon::parse($flight->departure_date . ' ' . $flight->departure_time);
         $arrivalDateTime = Carbon::parse($flight->arrival_date . ' ' . $flight->arrival_time);
@@ -159,7 +159,7 @@ class FlightController extends Controller
             $formattedDuration .= $minutes . 'm';
         }
 
-     
+
         $flight->flight_number = $flightNumber;
         $flight->save();
         return redirect('superadmin/flight-lists')->with('success', 'Flight Added Successfully');
@@ -171,12 +171,12 @@ class FlightController extends Controller
         $airlines = Airline::all();
         $airports = Airport::all();
 
-        // Format date and time for departure display 
+        // Format date and time for departure display
         $flights->formatted_departure_date = Carbon::parse($flights->departure_date)->format('d/m/Y');
         $flights->formatted_arrival_date = Carbon::parse($flights->arrival_date)->format('d/m/Y');
         $flights->formatted_departure_time = Carbon::parse($flights->departure_time)->format('h:iA');
         $flights->formatted_arrival_time = Carbon::parse($flights->arrival_time)->format('h:iA');
-        
+
         // Format date and time for return display
         $flights->formatted_departure_date_return = Carbon::parse($flights->departure_date_return)->format('d/m/Y');
         $flights->formatted_arrival_date_return = Carbon::parse($flights->arrival_date_return)->format('d/m/Y');
@@ -204,7 +204,7 @@ class FlightController extends Controller
             'flight_number' => 'nullable',
             'return_flight_number' => 'nullable',
         ];
-    
+
         // Apply the validation rules to the request data
         $request->validate($rules);
 
@@ -239,7 +239,7 @@ class FlightController extends Controller
         if ($arrivalDateTime->diffInMinutes($departureDateTime) < 60) {
             return redirect()->back()->with('error', 'There should be at least a 1-hour interval between Departure and Arrival.');
         }
-        
+
         function generateUniqueFlightNumber() {
             $prefix = "PR";
             $randomNumbers = str_pad(rand(0, 999), 3, '0', STR_PAD_LEFT);
@@ -282,8 +282,8 @@ class FlightController extends Controller
         $flight->duration = $formattedDuration;
         $flight->return_flight_number = $flightNumberReturn;
         $flight->price = $request->input('price');
-        $flight->airline_id = $request->input('airline_id');        
-      
+        $flight->airline_id = $request->input('airline_id');
+
         // Calculate the duration as a DateInterval
         $departureDateTime = Carbon::parse($flight->departure_date . ' ' . $flight->departure_time);
         $arrivalDateTime = Carbon::parse($flight->arrival_date . ' ' . $flight->arrival_time);
@@ -307,11 +307,11 @@ class FlightController extends Controller
             $formattedDuration .= $minutes . 'm';
         }
 
-     
+
         $flight->flight_number = $flightNumber;
         // Save the updated flight
         $flight->update();
-    
+
         // Redirect to the flight list or a relevant page
         return redirect('superadmin/flight-lists')->with('success', 'Flight Updated Successfully');
     }
@@ -348,10 +348,10 @@ class FlightController extends Controller
         $departureDate = $request->input('departure_date');
         $returnDate = $request->input('departure_date_return');
         $flightType = $request->input('flight_type');
-    
+
         $departureDate = $departureDate ? Carbon::parse($departureDate)->format('Y-m-d') : now()->format('Y-m-d');
         $returnDate = $returnDate ? Carbon::parse($returnDate)->format('Y-m-d') : now()->format('Y-m-d');
-    
+
         // Retrieve flights based on the provided departure date and flight type
         $flights = Flight::where('departure_date', '>=', $departureDate)
             ->where('flight_type', $flightType)
@@ -359,55 +359,55 @@ class FlightController extends Controller
                 return $query->where('departure_date_return', '<', $returnDate);
             })
             ->get();
-    
+
         // Retrieve all flights (you may adjust this query based on your needs)
         $allFlights = Flight::all();
-    
+
         // Calculate total price for all flights
         $totalPriceAll = $allFlights->sum('price');
-    
+
         // Calculate total price for the filtered flights
         $totalPriceFiltered = $flights->sum('price');
-    
+
         // Get fully booked passengers for the filtered flights
         $fullyBookedPassengers = Booking::whereIn('id', $flights->pluck('id'))
             ->where('status', '1')
             ->get();
-    
+
         // Calculate total ticket amount
         $totalTicketAmount = $this->calculateTotalTicketAmount($fullyBookedPassengers);
-    
+
         return view('superadmin.report.index', compact('flights', 'allFlights', 'totalPriceAll', 'totalPriceFiltered', 'fullyBookedPassengers', 'totalTicketAmount'));
     }
-    
+
     private function calculateTotalTicketAmount($fullyBookedPassengers)
     {
         $totalTicketAmount = 0;
-    
+
         foreach ($fullyBookedPassengers as $book) {
             $numberofPassengers = $book->adultPassengers + $book->childPassengers + $book->infantPassengers;
             $baggage_array = explode('|', $book->adds_on_baggage);
             $baggage_sum = array_sum($baggage_array);
-    
+
             $seat_prices = [];
             $seat = explode('|', $book->seat);
-    
+
             for ($i = 1; $i <= $numberofPassengers; $i++) {
-                if (in_array($seat[$i - 1], ["A1", "A2", "A3", "A4", "A5"])) {
+                if (in_array($seat[$i - 1], ["A1", "A2", "A3", "A4", "A5", "A6"])) {
                     $seat_prices[] = 390;
-                } elseif (in_array($seat[$i - 1], ["B1", "B2", "B3", "B4", "B5"])) {
+                } elseif (in_array($seat[$i - 1], ["B1", "B2", "B3", "B4", "B5", "B6"])) {
                     $seat_prices[] = 245;
                 } else {
                     $seat_prices[] = 200;
                 }
             }
-    
+
             $total_seat_price = array_sum($seat_prices);
-    
+
             $totalTicketAmount += $book->price * $numberofPassengers + $baggage_sum + $total_seat_price;
         }
-    
+
         return $totalTicketAmount;
     }
-    
+
 }
