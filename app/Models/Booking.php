@@ -44,6 +44,7 @@ class Booking extends Model
         'gate',
         'ticket_id',
         'booking_id',
+        'special_assistance_type',
     ];
 
     public function user()

@@ -36,6 +36,7 @@ class BookingController extends Controller
         $address = $request->input('address');
         $date_of_birth = $request->input('date_of_birth');
         $pwd = $request->input('pwd') ;
+        $special_assistance_type = $request->input('inputs') ;
 
       $numberofPassengers = $request->input('adultPassengers') +  $request->input('childPassengers') + $request->input('infantPassengers');
 
@@ -88,6 +89,7 @@ class BookingController extends Controller
             'date_of_birth' => implode('|',$date_of_birth),
             'pwd' => !empty($pwd) ? implode('|', $pwd) : null,
             'special_asssitance' => implode('|',$specialAssistance),
+            'special_assistance_type' => implode('|',$special_assistance_type),
             'adds_on_baggage' =>  implode('|',$adds_on_baggage),
             'seatClass' => $request->input('seatClass'),
             'gate' => $this->generateRandomGate(),

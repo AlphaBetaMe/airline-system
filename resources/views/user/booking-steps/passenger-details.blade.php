@@ -124,7 +124,7 @@
                                 with disability</a> (PWD)</label for="pwd">
                     </div>
                 </div>
-                <div class="row mb-3 ">
+                {{-- <div class="row mb-3 ">
                     <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
                         <label class="ms-2" for="special_asssitance">Do you need special assistance?</label
                             for="special_asssitance">
@@ -140,6 +140,113 @@
                         </div>
                     </div>
                 </div>
+                --}}
+
+                <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+                    <label class="ms-2" for="special_assistance">Do you need special assistance?</label
+                        for="special_assistance">
+                    <div class="ms-4">
+                        <input type="radio" name="special_assistance{{ $i }}[]" value="yes"
+                            id="special_assistance_yes{{ $i }}" x-model="inputs[{{ $i - 1 }}].specialAssistance">
+                        <label for="special_assistance_yes{{ $i }}">Yes</label>
+                    </div>
+                    <div class="ms-4">
+                        <input type="radio" name="special_assistance{{ $i }}[]" value="no"
+                            id="special_assistance_no{{ $i }}" x-model="inputs[{{ $i - 1 }}].specialAssistance">
+                        <label for="special_assistance_no{{ $i }}">No</label>
+                    </div>
+                </div>
+
+                <div x-show="inputs[{{ $i - 1 }}].specialAssistance === 'yes'"
+                    x-init="inputs[{{ $i - 1 }}].specialAssistanceType = inputs[{{ $i - 1 }}].specialAssistanceType || ''">
+                    <div class="row mb-3">
+                        <div class="col-md-6 mb-3">
+                            <label class="mb-2">Type of Special Assistance</label>
+                            <div class="form-check">
+                                <input type="radio" x-model="inputs[{{ $i - 1 }}].specialAssistanceType"
+                                    value="mobility_assistance" class="form-check-input"
+                                    id="mobility_assistance{{ $i }}">
+                                <label class="form-check-label" for="mobility_assistance{{ $i }}">Mobility
+                                    Assistance</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="radio" x-model="inputs[{{ $i - 1 }}].specialAssistanceType"
+                                    value="elderly_assistance" class="form-check-input" id="elderly_assistance{{ $i }}">
+                                <label class="form-check-label" for="elderly_assistance{{ $i }}">Assistance for Elderly
+                                    Passengers</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="radio" x-model="inputs[{{ $i - 1 }}].specialAssistanceType"
+                                    value="priority_boarding" class="form-check-input" id="priority_boarding{{ $i }}">
+                                <label class="form-check-label" for="priority_boarding{{ $i }}">Priority
+                                    Boarding</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="radio" x-model="inputs[{{ $i - 1 }}].specialAssistanceType"
+                                    value="extra_space" class="form-check-input" id="extra_space{{ $i }}">
+                                <label class="form-check-label" for="extra_space{{ $i }}">Extra Space</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="radio" x-model="inputs[{{ $i - 1 }}].specialAssistanceType"
+                                    value="medical_equipment_assistance" class="form-check-input"
+                                    id="medical_equipment_assistance{{ $i }}">
+                                <label class="form-check-label" for="medical_equipment_assistance{{ $i }}">Assistance
+                                    With Medical Equipment</label>
+                            </div>
+                            <!-- Add more radio buttons as needed -->
+                        </div>
+                        <!-- Add more fields as needed -->
+                    </div>
+                </div>
+
+                <input type="hidden" x-model="inputs[{{ $i - 1 }}].specialAssistanceType"
+                    name="special_assistance_type">
+                <!-- ... (previous code) ... -->
+                {{--
+                <div x-show="inputs[{{ $i - 1 }}].specialAssistance === 'yes'"
+                    x-init="inputs[{{ $i - 1 }}].specialAssistanceType = inputs[{{ $i - 1 }}].specialAssistanceType || ''">
+                    <div class="row mb-3">
+                        <div class="col-md-6 mb-3">
+                            <label class="mb-2">Type of Special Assistance</label>
+                            <div class="form-check">
+                                <input type="radio" x-model="inputs[{{ $i - 1 }}].specialAssistanceType"
+                                    value="mobility_assistance" class="form-check-input"
+                                    id="mobility_assistance{{ $i }}">
+                                <label class="form-check-label" for="mobility_assistance{{ $i }}">Mobility
+                                    Assistance</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="radio" x-model="inputs[{{ $i - 1 }}].specialAssistanceType"
+                                    value="elderly_assistance" class="form-check-input" id="elderly_assistance{{ $i }}">
+                                <label class="form-check-label" for="elderly_assistance{{ $i }}">Assistance for Elderly
+                                    Passengers</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="radio" x-model="inputs[{{ $i - 1 }}].specialAssistanceType"
+                                    value="priority_boarding" class="form-check-input" id="priority_boarding{{ $i }}">
+                                <label class="form-check-label" for="priority_boarding{{ $i }}">Priority
+                                    Boarding</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="radio" x-model="inputs[{{ $i - 1 }}].specialAssistanceType"
+                                    value="extra_space" class="form-check-input" id="extra_space{{ $i }}">
+                                <label class="form-check-label" for="extra_space{{ $i }}">Extra Space</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="radio" x-model="inputs[{{ $i - 1 }}].specialAssistanceType"
+                                    value="medical_equipment_assistance" class="form-check-input"
+                                    id="medical_equipment_assistance{{ $i }}">
+                                <label class="form-check-label" for="medical_equipment_assistance{{ $i }}">Assistance
+                                    With Medical Equipment</label>
+                            </div>
+                            <!-- Add more radio buttons as needed -->
+                        </div>
+                        <!-- Add more fields as needed -->
+                    </div>
+                </div>
+                --}}
+                <!-- ... (remaining code) ... -->
+
             </div>
     </div>
     @endfor
