@@ -43,6 +43,7 @@ class Booking extends Model
         'seatClass',
         'gate',
         'ticket_id',
+        'booking_id',
     ];
 
     public function user()

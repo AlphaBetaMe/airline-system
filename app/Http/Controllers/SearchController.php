@@ -86,6 +86,7 @@ class SearchController extends Controller
 
         if($queryFlightType === "one_way") {
             $selected_departure = Flight::where('id', $request->selected_flight)->get();
+            $selected_return = [];
         } else {
             $selected_departure = Flight::where('id', $request->selected_departure)->get();
             $selected_return = Flight::where('id', $request->selected_return)->get();
@@ -157,7 +158,7 @@ class SearchController extends Controller
             'D1', 'D2', 'D3', 'D4', 'D5',
             // ... other seats
         ];
-        dd($result);
+        // dd($result);
 
 
          $acquiredSeats = Booking::where('originAirportCode', $originAirportCode)->where('destinationAirportCode', $destinationAirportCode)->pluck('seat')->toArray();

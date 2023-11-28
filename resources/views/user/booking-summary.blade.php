@@ -3,7 +3,15 @@
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Booking Summary</h5>
+                <div>
+                    <h5 class="modal-title" id="exampleModalLabel">Booking Summary</h5>
+                    <div class="mt-2">
+                        <label style="font-size: 1.15rem;" for="booking_id">Booking ID:</label>
+                        <input style="font-size: 1.15rem; border: none; outline: none;" type="text" id="booking_id"
+                            name="booking_id" readonly>
+
+                    </div>
+                </div>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -43,6 +51,8 @@
                     </div>
             </div>
             @endfor
+            @if ($selected_departure)
+
             <div class="mt-3">
                 <h5 style="font-weight: 600">
                     Flight Details
@@ -115,11 +125,11 @@
                                     <li x-text="originAirportName"></li>
                                 </div>
                             </div>
-                            @if ($queryFlightType === "round_trip")
+                            {{-- @if ($queryFlightType === "round_trip") --}}
                             <div class="col-md-4">
                                 <div>
                                     <h6 class="fw-bold">
-                                        Return
+                                        Arrival
                                         {{-- Arrivak --}}
                                     </h6>
                                     <li x-text="arrival_date"></li>
@@ -128,7 +138,7 @@
 
                                 </div>
                             </div>
-                            @endif
+                            {{-- @endif --}}
                         </div>
                     </div>
 
@@ -214,7 +224,7 @@
                             <div class="col-md-4">
                                 <div>
                                     <h6 class="fw-bold">
-                                        Return
+                                        Arrival
                                     </h6>
                                     <li>
                                         {{ \Carbon\Carbon::parse($result->arrival_date_return)->format('M d Y, D.') }}
@@ -274,6 +284,8 @@
                     </div>
                 </div>
             </div>
+            @endif
+
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Back</button>
                 <button id="confirmButton" type="submit" class="btn btn-primary">Confirm and Continue</button>
@@ -292,6 +304,29 @@ $initialTotalAmount = 0;
 <script>
     // Wait for the DOM content to be fully loaded
     document.addEventListener('DOMContentLoaded', function () {
+
+        function generateRandomString(length) {
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let result = '';
+            for (let i = 0; i < length; i++) {
+                result += characters.charAt(Math.floor(Math.random() * characters.length));
+            }
+            return result;
+        }
+
+        // Get the input element
+        const randomInput = document.getElementById('booking_id');
+
+        // Generate a random alphanumeric string of length 10
+        const randomValue = generateRandomString(10);
+
+        // Set the generated value to the input element
+        randomInput.value = randomValue;
+
+
+
+
+
         // Select the radio button with id="0kg{{ $i }}" and set it as checked
         const defaultRadioButton = document.getElementById('0kg{{ $i }}');
         if (defaultRadioButton) {
@@ -331,7 +366,8 @@ $initialTotalAmount = 0;
         // Update the amount for the specific card
         totalAmountElement.textContent = selectedValue.toFixed(2); // Display the value with two decimal places
 
-        const totalP = {{ $item->price + $selected_dep->price }};
+        // const totalP = {{ $item->price ?? 0  + $selected_dep->price  }};
+        const totalP =  {{ $item->price ?? 0 }} +  {{ $selected_dep->price }} ;
         console.log(totalP);
 
         // Add the new selected value to the total amount
@@ -429,7 +465,8 @@ $initialTotalAmount = 0;
 
     // Function to update the grand total
     function updateGrandTotal() {
-        const totalP = {{ $item->price + $selected_dep->price }};
+        // const totalP = {{ $item->price ?? 0  + $selected_dep->price  }};
+        const totalP =  {{ $item->price ?? 0 }} +  {{ $selected_dep->price }} ;
         const gtotal = totalAmount + selectedSeatsValue + totalP;
 
 
@@ -437,7 +474,9 @@ $initialTotalAmount = 0;
         document.getElementById("baggageTotal").textContent = totalAmount.toFixed(2);
     }
 
-    const fback = {{ $item->price + $selected_dep->price }}
+
+    // const fback = {{ $item->price ?? 0  + $selected_dep->price  }}
+    const fback = {{ $item->price ?? 0 }} +  {{ $selected_dep->price }} ;
         const fbackB= 0
         document.getElementById("grandtotal").textContent = fback;
         document.getElementById("baggageTotal").textContent = fbackB;

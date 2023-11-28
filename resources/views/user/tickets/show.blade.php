@@ -103,8 +103,10 @@
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-4">
-                                <p class="m-0 text-muted">Flight Number</p>
-                                <h5> {{ substr($ticket->flight_no, 0, 2) }} {{ substr($ticket->flight_no, 2) }}</h5>
+                                <p class="m-0 text-muted">Booking ID</p>
+                                {{-- <h5> {{ substr($ticket->flight_no, 0, 2) }} {{ substr($ticket->flight_no, 2) }}
+                                </h5> --}}
+                                <h5> {{ $ticket->booking_id }}</h5>
                             </div>
                             <div class="col-md-4">
                                 <p class="m-0 text-muted">Boarding Time</p>
@@ -145,9 +147,10 @@
                     <div class="col-md-4 dashed-border">
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <p class="m-0 text-muted">Flight Number</p>
-                                <h6 class="fw-bold"> {{ substr($ticket->flight_no, 0, 2) }} {{
-                                    substr($ticket->flight_no, 2) }}</h6>
+                                <p class="m-0 text-muted">Booking ID</p>
+                                {{-- <h6 class="fw-bold"> {{ substr($ticket->flight_no, 0, 2) }} {{
+                                    substr($ticket->flight_no, 2) }}</h6> --}}
+                                <h5> {{ $ticket->booking_id }}</h5>
                             </div>
                             <div class="col-md-6">
                                 <p class="m-0 text-muted">Airline</p>

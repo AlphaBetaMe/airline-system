@@ -29,7 +29,6 @@ class BookingController extends Controller
      */
     public function store(Request $request)
     {
-
         $last_name = $request->input('last_name');
         $first_name = $request->input('first_name');
         $middle_initial = $request->input('middle_initial');
@@ -37,8 +36,6 @@ class BookingController extends Controller
         $address = $request->input('address');
         $date_of_birth = $request->input('date_of_birth');
         $pwd = $request->input('pwd') ;
-
-
 
       $numberofPassengers = $request->input('adultPassengers') +  $request->input('childPassengers') + $request->input('infantPassengers');
 
@@ -57,7 +54,6 @@ class BookingController extends Controller
         }
     }
 
-    dd($request->price);
 
         $totalSeats = DB::table('airlines')->where('airline', $request->input('airline'))->pluck('total_seats')->first();
         $availableSeats = max(0, $totalSeats - $numberofPassengers);
@@ -97,6 +93,7 @@ class BookingController extends Controller
             'gate' => $this->generateRandomGate(),
             'ticket_id' =>  implode('|',$ticket_id),
             'cancel' => $request->input('cancel'),
+            'booking_id' => $request->input('booking_id'),
         ]);
 
             $bookingId = $booking->id;
