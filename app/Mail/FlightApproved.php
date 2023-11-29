@@ -3,11 +3,11 @@
 namespace App\Mail;
 
 use App\Models\Booking;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
 class FlightApproved extends Mailable
@@ -18,47 +18,45 @@ class FlightApproved extends Mailable
      * Create a new message instance.
      */
     public $ticket;
-
-    public function __construct(Booking $ticket)
+    public $additionalData;
+    public function __construct(Booking $ticket,  array $additionalData)
     {
         $this->ticket = $ticket;
+        $this->additionalData = $additionalData;
     }
 
     public function build()
     {
+        // Generate PDF
+        $pdf = $this->generatePDF();
+        $pdfContent = $pdf->output();
+
         return $this
-        ->to($this->ticket->user->email) // Set the recipient's email address here
-        ->subject('Flight Approved')
-        ->view('emails.reservation.approved');
+            // ->to($this->ticket->user->email)
+            ->to("jerichobantiquete@gmail.com")
+            ->subject('Flight Approved')
+            ->view('emails.reservation.approved')
+            ->attachData($pdfContent, 'approval_' . $this->ticket->id . '.pdf', [
+                'mime' => 'application/pdf',
+            ]);
     }
 
     /**
-     * Get the message envelope.
+     * Generate PDF for the ticket.
      */
-    public function envelope(): Envelope
+    private function generatePDF()
     {
-        return new Envelope(
-            subject: 'Flight Approved',
-        );
-    }
+        $options = new Options();
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('isPhpEnabled', true);
 
-    /**
-     * Get the message content definition.
-     */
-    public function content(): Content
-    {
-        return new Content(
-            view: 'emails.reservation.approved',
-        );
-    }
+        $dompdf = new Dompdf($options);
+        $html = view('pdf.approval', ['ticket' => $this->ticket, 'additionalData' => $this->additionalData])->render();
 
-    /**
-     * Get the attachments for the message.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
-     */
-    public function attachments(): array
-    {
-        return [];
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+
+        return $dompdf;
     }
 }
