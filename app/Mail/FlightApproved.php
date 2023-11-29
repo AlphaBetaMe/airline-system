@@ -32,8 +32,7 @@ class FlightApproved extends Mailable
         $pdfContent = $pdf->output();
 
         return $this
-            // ->to($this->ticket->user->email)
-            ->to("jerichobantiquete@gmail.com")
+            ->to($this->ticket->user->email)
             ->subject('Flight Approved')
             ->view('emails.reservation.approved')
             ->attachData($pdfContent, 'approval_' . $this->ticket->id . '.pdf', [
@@ -54,7 +53,7 @@ class FlightApproved extends Mailable
         $html = view('pdf.approval', ['ticket' => $this->ticket, 'additionalData' => $this->additionalData])->render();
 
         $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->setPaper('A4', 'landscape');
         $dompdf->render();
 
         return $dompdf;

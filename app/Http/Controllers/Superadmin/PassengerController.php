@@ -28,7 +28,7 @@ class PassengerController extends Controller
         return view('superadmin.passenger.details', compact('tickets'));
     }
 
-    private function generatePDF($ticket) {
+    private function generatePDF($ticket, $additionalData) {
         $options = new Options();
         $options->set('isHtml5ParserEnabled', true);
         $options->set('isPhpEnabled', true);
@@ -46,6 +46,7 @@ class PassengerController extends Controller
     public function updateTicket(Request $request, $id)
     {
         $ticket = Booking::findOrFail($id);
+        $numberofPassengers = $ticket->adultPassengers + $ticket->childPassengers + $ticket->infantPassengers;
         $previousStatus = $ticket->status; // Store the previous status for comparison
         $ticket->status = $request->status;
         $ticket->save();
@@ -72,6 +73,7 @@ class PassengerController extends Controller
             'firstNames' => $request->first_name,
             'lastNames' => $request->last_name,
             'flightType' => $request->flight_type,
+            'numberofPassengers' => $numberofPassengers,
         ];
 
         if ($request->status == 1 && $previousStatus != 1) {
@@ -79,12 +81,12 @@ class PassengerController extends Controller
             Mail::to($ticket->user->email)->send(new FlightApproved($ticket, $additionalData));
 
             // Generate and download PDF
-            $pdf = $this->generatePDF($ticket, $additionalData);
+           /*  $pdf = $this->generatePDF($ticket, $additionalData);
             $pdfFileName = 'approval_' . $ticket->id . '.pdf';
             file_put_contents(storage_path('app/pdf/' . $pdfFileName), $pdf->output());
 
             return response()->download(storage_path('app/pdf/' . $pdfFileName))
-                ->deleteFileAfterSend(true);
+                ->deleteFileAfterSend(true); */
         } elseif ($request->status == 2 && $previousStatus != 2) {
             // Send cancellation email to the passenger
             $reason = $request->input('cancellation_reason');
